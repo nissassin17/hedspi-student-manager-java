@@ -13,7 +13,10 @@ import java.util.logging.SimpleFormatter;
 
 import javax.swing.JOptionPane;
 
+import org.hedspi.posgresql.hedspi_student_manager.model.LoginInfo;
+import org.hedspi.posgresql.hedspi_student_manager.model.Model;
 import org.hedspi.posgresql.hedspi_student_manager.view.IView;
+import org.hedspi.posgresql.hedspi_student_manager.view.function_window.FunctionWindow;
 import org.hedspi.posgresql.hedspi_student_manager.view.login.LoginWindow;
 
 /**
@@ -27,6 +30,11 @@ public class Control implements IControl{
 	private static Control instance = null;
 	private Logger logger;
 	private FileHandler logFileHandler;
+	private FunctionWindow functionWindow;
+	
+	/**
+	 * init and open log
+	 */
 	private Control(){
 		logger = Logger.getLogger("hedspi-student-manager");
 		try {
@@ -46,18 +54,14 @@ public class Control implements IControl{
 	}
 	
 	private IView login;
+	/**
+	 * triggered by any
+	 */
 	@Override
 	public void fire(String command, Object... data) {
 		switch(command){
 		case "start":
-			try{
-				logger.log(Level.INFO, "System starts");
-				login = new LoginWindow();
-				login.fire("open");
-			} catch (Exception e){
-				logger.log(Level.SEVERE, "An error has occured when try to start program.\nMessage: " + e.getMessage());
-				JOptionPane.showMessageDialog(null, "An error has occured when try to start program.\nMessage: " + e.getMessage(), "Starting program errors", JOptionPane.ERROR_MESSAGE);
-			}
+			start();
 			break;
 		case "exit":
 			logger.log(Level.INFO, "System exits");
@@ -68,13 +72,62 @@ public class Control implements IControl{
 		}
 		
 	}
+	
+	/**
+	 * Triggered by view
+	 */
 	@Override
 	public void fireByView(IView view, String command, Object... data) {
 		switch(command){
+		case "try-login":
+			tryLogin(view, (LoginInfo)data[0]);
+			break;
+		case "init-database":
+			initDatabase(view, data[0]);
+			break;
 		default:
 			logger.log(Level.WARNING, "A view has fired Control an operation that is not supported.\nCommand: " + command);
 		}
 		
+	}
+
+	private void initDatabase(IView view, Object data) {
+		logger.log(Level.INFO, "Init database");
+		String message = (String)Model.getInstance().getData("init-database", data);
+		if (message == "")
+			logger.log(Level.INFO, "Init database successed");
+		else
+			logger.log(Level.WARNING, "Init database failed.\nMessage: " + message);
+		view.fire("init-database-result", message);
+	}
+
+	private void start() {
+		try{
+			logger.log(Level.INFO, "System starts");
+			logger.log(Level.INFO, "Open login window");
+			login = new LoginWindow();
+			login.fire("set-visible", true);
+		} catch (Throwable e){
+			logger.log(Level.SEVERE, "An error has occured when try to start program.\nMessage: " + e.getMessage());
+			JOptionPane.showMessageDialog(null, "An error has occured when try to start program.\nMessage: " + e.getMessage(), "Starting program errors", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	private void tryLogin(IView view, LoginInfo loginInfo) {
+		logger.log(Level.INFO, "Try login");
+		boolean ok = (boolean)Model.getInstance().getData("check-login", loginInfo);
+		if (!ok){
+			view.fire("login-fail");
+			logger.log(Level.INFO, "Login failed");
+		} else{
+			logger.log(Level.INFO, "Login success");
+			//hide current login
+			view.fire("set-visible", false);
+			//show function list
+			functionWindow = new FunctionWindow(loginInfo);
+			logger.log(Level.INFO, "Show main function window");
+			functionWindow.fire("set-visible", true);
+		}
 	}
 
 	@Override

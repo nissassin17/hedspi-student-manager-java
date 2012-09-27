@@ -20,7 +20,7 @@ public final class MainEntry {
 	public static void main(String[] args) {
 		try{
 			Control.getInstance().fire("start");
-		} catch (Exception e){
+		} catch (Throwable e){
 			JOptionPane.showMessageDialog(null, "An error has occured while running application.\nMessage: " + e.getMessage());
 		}
 	}
