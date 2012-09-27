@@ -11,9 +11,9 @@ public class CancelButton extends JButton {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Closable frame;
+	private IClosable frame;
 	
-	public CancelButton(Closable frame){
+	public CancelButton(IClosable frame){
 		super("Cancel");
 		super.setMnemonic('c');
 		this.frame = frame;
@@ -26,8 +26,8 @@ public class CancelButton extends JButton {
 		});
 	}
 	
-	public Closable getFrameWithClose(){
-		return (Closable)frame;
+	public IClosable getFrameWithClose(){
+		return (IClosable)frame;
 	}
 
 }
