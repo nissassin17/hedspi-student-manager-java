@@ -3,6 +3,7 @@ package org.hedspi.posgresql.hedspi_student_manager.model;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.logging.Level;
 
 import org.hedspi.posgresql.hedspi_student_manager.control.Control;
@@ -24,7 +25,7 @@ public class Model implements IModel{
 	public Object getData(String command, Object... data) {
 		switch(command){
 		case "check-login":
-			LoginInfo loginInfo = (LoginInfo) data[0];
+			Properties loginInfo = (Properties) data[0];
 			return Service.getInstance().isGoodLogin(loginInfo);
 		case "init-database":
 			/**
@@ -39,7 +40,7 @@ public class Model implements IModel{
 	}
 
 	private String initDatabase(LoginInfo loginInfo) {
-		String url = loginInfo.getUrl(Service.DATABASE);
+		String url = loginInfo.getUrl();
 		Connection con = null;
 		try {
 			con = DriverManager.getConnection(url);

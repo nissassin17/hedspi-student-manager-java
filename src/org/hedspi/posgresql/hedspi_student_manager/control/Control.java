@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Properties;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,10 +15,9 @@ import java.util.logging.SimpleFormatter;
 
 import javax.swing.JOptionPane;
 
-import org.hedspi.posgresql.hedspi_student_manager.model.LoginInfo;
 import org.hedspi.posgresql.hedspi_student_manager.model.Model;
 import org.hedspi.posgresql.hedspi_student_manager.view.IView;
-import org.hedspi.posgresql.hedspi_student_manager.view.function_window.FunctionWindow;
+import org.hedspi.posgresql.hedspi_student_manager.view.function_window.AllFunction;
 import org.hedspi.posgresql.hedspi_student_manager.view.login.LoginWindow;
 
 /**
@@ -32,7 +32,7 @@ public class Control implements IControl{
 	private static Control instance = null;
 	private Logger logger;
 	private FileHandler logFileHandler;
-	private FunctionWindow functionWindow;
+	private AllFunction functionWindow;
 	
 	/**
 	 * init and open log
@@ -84,7 +84,7 @@ public class Control implements IControl{
 	public void fireByView(IView view, String command, Object... data) {
 		switch(command){
 		case "try-login":
-			tryLogin(view, (LoginInfo)data[0]);
+			tryLogin(view, (Properties)data[0]);
 			break;
 		case "init-database":
 			initDatabase(view, data[0]);
@@ -117,7 +117,7 @@ public class Control implements IControl{
 		}
 	}
 
-	private void tryLogin(IView view, LoginInfo loginInfo) {
+	private void tryLogin(IView view, Properties loginInfo) {
 		logger.log(Level.INFO, "Try login");
 		boolean ok = (boolean)Model.getInstance().getData("check-login", loginInfo);
 		if (!ok){
@@ -128,7 +128,7 @@ public class Control implements IControl{
 			//hide current login
 			view.fire("set-visible", false);
 			//show function list
-			functionWindow = new FunctionWindow(loginInfo);
+			functionWindow = new AllFunction(loginInfo);
 			logger.log(Level.INFO, "Show main function window");
 			functionWindow.fire("set-visible", true);
 		}

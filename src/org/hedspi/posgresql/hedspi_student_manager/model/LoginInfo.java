@@ -1,15 +1,17 @@
 package org.hedspi.posgresql.hedspi_student_manager.model;
 public class LoginInfo{
-	String host;
-	String port;
-	String username;
-	String password;
+	private String host;
+	private String port;
+	private String username;
+	private String password;
+	private String dbname;
 
-	public LoginInfo(String host, String port, String username, String password){
+	public LoginInfo(String host, String port, String dbname, String username, String password){
 		this.host = host;
 		this.port = port;
 		this.username = username;
 		this.password = password;
+		this.dbname = dbname;
 	}
 
 	/**
@@ -48,7 +50,11 @@ public class LoginInfo{
 		return this.password;
 	}
 
-	public String getUrl(String database) {
-		return "jdbc:postgresql://"+host+":" + port +"/" + database+"?user="+username+"&password="+password+"&ssl=true";
+	public String getUrl() {
+		return "jdbc:postgresql://"+host+":" + port +"/" + dbname+"?user="+username+"&password="+password+"&ssl=true";
+	}
+
+	public String getDbname() {
+		return dbname;
 	}
 }

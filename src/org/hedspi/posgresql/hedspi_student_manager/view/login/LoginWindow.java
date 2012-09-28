@@ -4,11 +4,11 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Properties;
 import java.util.logging.Level;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import org.hedspi.posgresql.hedspi_student_manager.control.Control;
-import org.hedspi.posgresql.hedspi_student_manager.model.LoginInfo;
 import org.hedspi.posgresql.hedspi_student_manager.view.IView;
 import org.hedspi.posgresql.hedspi_student_manager.view.util.CancelButton;
 import org.hedspi.posgresql.hedspi_student_manager.view.util.IFrameAskToClose;
@@ -21,14 +21,18 @@ public class LoginWindow extends IFrameAskToClose implements IView {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Dimension DEFAULT_LOGIN_SIZE = new Dimension(300, 210);
+	private static final Dimension DEFAULT_LOGIN_SIZE = new Dimension(300, 250);
 	private InputField username;
 	private InputField password;
 	private InputField host;
+	private InputField dbname;
 	private FlowLayout fl;
 	private InputField port;
 	private static final String DEFAULT_HOST = "localhost";
 	private static final String DEFAULT_PORT = "5432";
+	public static final String DEFAULT_DBNAME = "hedspi";
+	public static final String DEFAULT_USERNAME = "Admin";
+	public static final String DEFAULT_PASSWORD = "hedspi";
 	
 	public LoginWindow(){
 		setUIBase();
@@ -59,7 +63,13 @@ public class LoginWindow extends IFrameAskToClose implements IView {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Control.getInstance().fireByView(((LoginButton)e.getSource()).getLoginWindow(), "try-login", new LoginInfo(host.getValue(), port.getValue(), username.getValue(), password.getValue()));
+				Properties prop = new Properties();
+				prop.setProperty("user", username.getValue());
+				prop.setProperty("password", password.getValue());
+				prop.setProperty("dbname", dbname.getValue());
+				prop.setProperty("host", host.getValue());
+				prop.setProperty("port", port.getValue());
+				Control.getInstance().fireByView(((LoginButton)e.getSource()).getLoginWindow(), "try-login", prop);
 			}
 		});
 
@@ -78,13 +88,18 @@ public class LoginWindow extends IFrameAskToClose implements IView {
 		port.setMnemonic('t');
 		super.getContentPane().add(port);
 		
+		//dbname
+		dbname = new InputField("Database name", DEFAULT_DBNAME);
+		dbname.setMnemonic('d');
+		super.getContentPane().add(dbname);
+		
 		//username
-		username = new InputField("User name");
+		username = new InputField("User name", DEFAULT_USERNAME);
 		username.setMnemonic('u');
 		super.getContentPane().add(username);
 		
 		//password
-		password = new InputField("Password", true);
+		password = new InputField("Password", DEFAULT_PASSWORD, true);
 		password.setMnemonic('p');
 		super.getContentPane().add(password);
 
