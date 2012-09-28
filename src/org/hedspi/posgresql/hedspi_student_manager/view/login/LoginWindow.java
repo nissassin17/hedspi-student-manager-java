@@ -5,16 +5,14 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
-
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-
 import org.hedspi.posgresql.hedspi_student_manager.control.Control;
 import org.hedspi.posgresql.hedspi_student_manager.model.LoginInfo;
 import org.hedspi.posgresql.hedspi_student_manager.view.IView;
 import org.hedspi.posgresql.hedspi_student_manager.view.util.CancelButton;
-import org.hedspi.posgresql.hedspi_student_manager.view.util.InputField;
 import org.hedspi.posgresql.hedspi_student_manager.view.util.IFrameAskToClose;
+import org.hedspi.posgresql.hedspi_student_manager.view.util.InputField;
 
 
 public class LoginWindow extends IFrameAskToClose implements IView {
@@ -103,10 +101,11 @@ public class LoginWindow extends IFrameAskToClose implements IView {
 			break;
 			
 			default:
-				Control.getInstance().getLogger().log(Level.WARNING, "You have called LoginWindow an operation that is not supported.\nCommand: " + command);
+				Control.getInstance().getLogger().log(Level.WARNING, "You have called LoginWindow an operation that is not supported.\nCommand: {0}", command);
 		}
 	}
 	
+    @Override
 	public void close() {
 		if (JOptionPane.showConfirmDialog(this, "Are you sure want to quit?", "Quit?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
 			super.setVisible(false);
