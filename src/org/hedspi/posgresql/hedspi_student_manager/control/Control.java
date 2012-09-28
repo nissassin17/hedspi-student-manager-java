@@ -3,6 +3,7 @@
  */
 package org.hedspi.posgresql.hedspi_student_manager.control;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,7 +27,8 @@ import org.hedspi.posgresql.hedspi_student_manager.view.login.LoginWindow;
  *
  */
 public class Control implements IControl{
-	private static final String LOG_FILE_NAME = "log/"+(new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss").format(Calendar.getInstance().getTime()))+".log";
+	private static final String LOG_DIR = "log";
+	private static final String LOG_FILE_NAME = LOG_DIR + "/"+(new SimpleDateFormat("yyyy-MM-dd--HH-mm-ss").format(Calendar.getInstance().getTime()))+".log";
 	private static Control instance = null;
 	private Logger logger;
 	private FileHandler logFileHandler;
@@ -38,6 +40,8 @@ public class Control implements IControl{
 	private Control(){
 		logger = Logger.getLogger("hedspi-student-manager");
 		try {
+			if (!(new File(LOG_DIR)).exists())
+				(new File(LOG_DIR)).mkdir();
 			logFileHandler = new FileHandler(LOG_FILE_NAME);
 		} catch (SecurityException | IOException e) {
 			JOptionPane.showMessageDialog(null, "An error has occured while opening log file with name: " + LOG_FILE_NAME + "\nMessage: " + e.getMessage(), "Opening log file failed", JOptionPane.ERROR_MESSAGE);
