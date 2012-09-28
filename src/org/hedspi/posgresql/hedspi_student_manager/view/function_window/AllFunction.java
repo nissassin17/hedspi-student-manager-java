@@ -108,7 +108,7 @@ public class AllFunction extends JFrame implements IView{
 				ColumnSpec.decode("default:grow"),},
 			new RowSpec[] {
 				FormFactory.UNRELATED_GAP_ROWSPEC,
-				RowSpec.decode("595px:grow"),}));
+				RowSpec.decode("712px:grow"),}));
 		
 		ContactPane panel_1 = new ContactPane();
 		panel.add(panel_1, "2, 2, fill, fill");

@@ -18,6 +18,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
 import javax.swing.border.TitledBorder;
+import com.jgoodies.forms.factories.DefaultComponentFactory;
 
 public class ContactPane extends JPanel {
 	private JTextField textField;
@@ -98,9 +99,10 @@ public class ContactPane extends JPanel {
 				RowSpec.decode("20px"),
 				RowSpec.decode("114px"),
 				RowSpec.decode("119px"),
+				RowSpec.decode("max(79dlu;default)"),
 				RowSpec.decode("53px:grow"),
 				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("max(6dlu;default)"),}));
+				RowSpec.decode("max(7dlu;default)"),}));
 		add(label_1, "3, 3, left, top");
 		add(label_2, "3, 5, left, center");
 		add(textField_2, "4, 5, fill, top");
@@ -128,11 +130,17 @@ public class ContactPane extends JPanel {
 		ListEditor listEditor = new ListEditor();
 		add(listEditor, "4, 21, fill, fill");
 		
+		JLabel lblImageUrls = DefaultComponentFactory.getInstance().createLabel("Image urls");
+		add(lblImageUrls, "3, 22");
+		
+		ListEditor listEditor_1 = new ListEditor();
+		add(listEditor_1, "4, 22, fill, fill");
+		
 		JLabel lblNotes = new JLabel("Notes");
-		add(lblNotes, "3, 22");
+		add(lblNotes, "3, 23");
 		
 		JEditorPane editorPane = new JEditorPane();
-		add(editorPane, "4, 22, fill, fill");
+		add(editorPane, "4, 23, fill, fill");
 
 	}
 }
