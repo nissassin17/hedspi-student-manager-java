@@ -2,7 +2,6 @@ package org.hedspi.posgresql.hedspi_student_manager.view.function_window;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 
 public class FunctionButton extends JButton {
@@ -27,8 +26,9 @@ public class FunctionButton extends JButton {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				IActionContainer actionContainer = ((FunctionButton)e.getSource()).getActionContainer();
-				if (actionContainer != null)
-					actionContainer.doAction();
+				if (actionContainer != null) {
+                                actionContainer.doAction();
+                            }
 			}
 		});
 	}

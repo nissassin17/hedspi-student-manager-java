@@ -3,6 +3,7 @@ package org.hedspi.posgresql.hedspi_student_manager.model;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.logging.Level;
 
 import org.hedspi.posgresql.hedspi_student_manager.control.Control;
@@ -21,17 +22,28 @@ public class Service {
 		}
 		return instance;
 	}
-	public static final String DATABASE = "testdb";
 	
-	public boolean isGoodLogin(LoginInfo loginInfo){
-			String url = loginInfo.getUrl(DATABASE);
+	public boolean isGoodLogin(Properties loginInfo){
+			String url = getUrl(loginInfo);
 			try {
 				Connection con = DriverManager.getConnection(url);
 				con.close();
 			} catch (SQLException e) {
+				Control.getInstance().getLogger().log(Level.WARNING, "Login failed: {0}", e.getMessage());
 				return false;
 			}
 			return true;
+	}
+
+	private String getUrl(Properties loginInfo) {
+		String url = "jdbc:postgresql://"+ loginInfo.getProperty("host", "localhost") +
+				":" + loginInfo.getProperty("port", "5432") +
+				"/" + loginInfo.getProperty("dbname", "hedspi") +
+				"?user="+ loginInfo.getProperty("username", "Admin") +
+				"&password="+loginInfo.getProperty("password", "hedspi");
+//				+ "&ssl=" + loginInfo.getProperty("ssl", "false");
+//		Control.getInstance().getLogger().log(Level.INFO, url);
+		return url;
 	}
 
 }
