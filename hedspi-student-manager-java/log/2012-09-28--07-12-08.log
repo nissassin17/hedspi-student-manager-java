@@ -1,0 +1,11 @@
+Sep 28, 2012 7:12:08 AM org.hedspi.posgresql.hedspi_student_manager.control.Control start
+INFO: System starts
+Sep 28, 2012 7:12:08 AM org.hedspi.posgresql.hedspi_student_manager.control.Control start
+INFO: Open login window
+Sep 28, 2012 7:12:18 AM org.hedspi.posgresql.hedspi_student_manager.control.Control tryLogin
+INFO: Try login
+Sep 28, 2012 7:12:18 AM org.hedspi.posgresql.hedspi_student_manager.model.Service getInstance
+SEVERE: Init postgresql driver failed.
+Message: org.postgresql.Driver
+Sep 28, 2012 7:12:32 AM org.hedspi.posgresql.hedspi_student_manager.control.Control fire
+INFO: System exits
