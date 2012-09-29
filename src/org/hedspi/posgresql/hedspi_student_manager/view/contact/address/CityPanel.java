@@ -7,6 +7,8 @@ import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
 import javax.swing.JLabel;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
+
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.JRadioButton;
@@ -15,14 +17,36 @@ import javax.swing.JTextField;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 
+import org.hedspi.posgresql.hedspi_student_manager.control.Control;
+import org.hedspi.posgresql.hedspi_student_manager.model.Model;
+import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.City;
+import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
+
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+
 public class CityPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField textField;
 	private JTextField textField_1;
+	private HedspiObjects<City> cities;
 
 	/**
 	 * Create the panel.
 	 */
 	public CityPanel() {
+		addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				if (cities == null)
+					cities = ((HedspiObjects<City>)Model.getInstance().getData("fetchCitiesList"));
+				if (cities == null)
+					JOptionPane.showMessageDialog(arg0.getComponent(), "Failed to fetch list of cities", "Cities list fetching failed", JOptionPane.ERROR_MESSAGE);
+			}
+		});
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("default:grow"),},

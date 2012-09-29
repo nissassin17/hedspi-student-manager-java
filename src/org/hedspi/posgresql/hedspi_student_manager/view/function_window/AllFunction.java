@@ -1,42 +1,26 @@
 package org.hedspi.posgresql.hedspi_student_manager.view.function_window;
 
 import java.awt.BorderLayout;
-import java.util.Properties;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.logging.Level;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.JScrollPane;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
-import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
 
 import org.hedspi.posgresql.hedspi_student_manager.control.Control;
 import org.hedspi.posgresql.hedspi_student_manager.view.IView;
-import org.hedspi.posgresql.hedspi_student_manager.view.contact.ContactPane;
 import org.hedspi.posgresql.hedspi_student_manager.view.contact.address.AddressPanel;
+import org.hedspi.posgresql.hedspi_student_manager.view.help.about.AboutBox;
 import org.hedspi.posgresql.hedspi_student_manager.view.student.StudentPanel;
-import org.hedspi.posgresql.hedspi_student_manager.view.student.add.AddStudentPane;
-import org.hedspi.posgresql.hedspi_student_manager.view.student.add.StudentOtherInfoPanel;
-
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import javax.swing.JSeparator;
-import java.awt.Dimension;
-import javax.swing.JLayeredPane;
-import java.awt.Component;
-import javax.swing.border.TitledBorder;
-import com.jgoodies.forms.factories.FormFactory;
-import javax.swing.JSplitPane;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class AllFunction extends JFrame implements IView{
 
@@ -45,7 +29,6 @@ public class AllFunction extends JFrame implements IView{
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPaneMain;
-	private Properties loginInfo;
 
 	/**
 	 * Launch the application.
@@ -62,12 +45,16 @@ public class AllFunction extends JFrame implements IView{
 //			}
 //		});
 //	}
+	
+	private JFrame getFrame(){
+		return this;
+	}
 
 	/**
 	 * Create the frame.
-	 * @param loginInfo 
 	 */
-	public AllFunction(Properties loginInfo) {
+	public AllFunction() {
+		setTitle("Hedspi Student Manager");
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
@@ -81,9 +68,22 @@ public class AllFunction extends JFrame implements IView{
 				Control.getInstance().fire("exit");
 			}
 		});
-		this.loginInfo = loginInfo;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 774, 478);
+		
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		JMenu mnHelp = new JMenu("Help");
+		menuBar.add(mnHelp);
+		
+		JButton btnAbout = new JButton("About");
+		btnAbout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				(new AboutBox(getFrame())).setVisible(true);
+			}
+		});
+		mnHelp.add(btnAbout);
 		contentPaneMain = new JPanel();
 		contentPaneMain.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPaneMain.setLayout(new BorderLayout(0, 0));

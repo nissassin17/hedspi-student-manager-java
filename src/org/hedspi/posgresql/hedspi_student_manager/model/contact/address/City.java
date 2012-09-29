@@ -1,23 +1,46 @@
 package org.hedspi.posgresql.hedspi_student_manager.model.contact.address;
 
-import java.util.ArrayList;
-
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObject;
+import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
+import org.hedspi.posgresql.hedspi_student_manager.service.AddressService;
+import org.javatuples.Pair;
 
 public class City extends HedspiObject {
 	
 	public static final String ID_CODE = "CY#";
 	public static final String NAME_CODE = "Name";
 	
-	private String Name;
-	private ArrayList<District> districts;
+	private String name;
+	public City(String id, String name) {
+		this(id);
+		this.name = name;
+	}
 
-	public ArrayList<District> getDistricts() {
+	private HedspiObjects<District> districts;
+	
+	public HedspiObjects<District> getDistricts() {
+		if (districts == null)
+			districts = new HedspiObjects<>();
 		return districts;
 	}
 
-	public void setDistricts(ArrayList<District> districts) {
+	public void setDistricts(HedspiObjects<District> districts) {
 		this.districts = districts;
+	}
+
+	private static HedspiObjects<City> cities;
+
+	public static void setCities(HedspiObjects<City> cities) {
+		City.cities = cities;
+	}
+
+	public static HedspiObjects<City> getCities() {
+		if (cities == null){
+			Pair<HedspiObjects<City>, HedspiObjects<District>> val = AddressService.getAddresses();
+			setCities(val.getValue0());
+			District.setDistricts(val.getValue1());
+		}
+		return cities;
 	}
 
 	public City(String id) {
@@ -25,15 +48,19 @@ public class City extends HedspiObject {
 	}
 
 	public String getName() {
-		return Name;
+		return name;
 	}
 
 	public void setName(String name) {
-		Name = name;
+		this.name = name;
 	}
 
 	public String toString(){
 		return getName();
+	}
+
+	public void addDistrict(District district) {
+		getDistricts().put(district);
 	}
 	
 }

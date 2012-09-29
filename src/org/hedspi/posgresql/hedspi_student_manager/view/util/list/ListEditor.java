@@ -1,24 +1,22 @@
 package org.hedspi.posgresql.hedspi_student_manager.view.util.list;
 
+import java.awt.Component;
+
+import javax.swing.JButton;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JList;
-import javax.swing.JButton;
 import javax.swing.JTextField;
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-import java.awt.Component;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.factories.FormFactory;
-import com.jgoodies.forms.layout.RowSpec;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
+
 import net.miginfocom.swing.MigLayout;
 
+import org.eclipse.wb.swing.FocusTraversalOnArray;
+
 public class ListEditor extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField textField;
 
 	/**
