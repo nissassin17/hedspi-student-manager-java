@@ -1,11 +1,15 @@
 package org.hedspi.posgresql.hedspi_student_manager.view.student;
 
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JScrollPane;
 import org.hedspi.posgresql.hedspi_student_manager.view.student.add.AddStudentPane;
 
 public class StudentPanel extends JTabbedPane {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Create the panel.

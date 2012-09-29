@@ -1,26 +1,26 @@
 package org.hedspi.posgresql.hedspi_student_manager.view.contact;
 
-import javax.swing.JPanel;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
 import javax.swing.JComboBox;
-import javax.swing.JToggleButton;
+import javax.swing.JEditorPane;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JScrollPane;
-import javax.swing.JList;
-import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JToggleButton;
+import javax.swing.border.TitledBorder;
 
 import org.hedspi.posgresql.hedspi_student_manager.view.util.list.ListEditor;
-import javax.swing.JEditorPane;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.factories.FormFactory;
-import javax.swing.border.TitledBorder;
+
 import com.jgoodies.forms.factories.DefaultComponentFactory;
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.RowSpec;
 
 public class ContactPane extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;

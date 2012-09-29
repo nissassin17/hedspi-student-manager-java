@@ -16,6 +16,7 @@ import java.util.logging.SimpleFormatter;
 import javax.swing.JOptionPane;
 
 import org.hedspi.posgresql.hedspi_student_manager.model.Model;
+import org.hedspi.posgresql.hedspi_student_manager.service.CoreService;
 import org.hedspi.posgresql.hedspi_student_manager.view.IView;
 import org.hedspi.posgresql.hedspi_student_manager.view.function_window.AllFunction;
 import org.hedspi.posgresql.hedspi_student_manager.view.login.LoginWindow;
@@ -86,23 +87,10 @@ public class Control implements IControl{
 		case "try-login":
 			tryLogin(view, (Properties)data[0]);
 			break;
-		case "init-database":
-			initDatabase(view, data[0]);
-			break;
 		default:
 			logger.log(Level.WARNING, "A view has fired Control an operation that is not supported.\nCommand: " + command);
 		}
 		
-	}
-
-	private void initDatabase(IView view, Object data) {
-		logger.log(Level.INFO, "Init database");
-		String message = (String)Model.getInstance().getData("init-database", data);
-		if (message == "")
-			logger.log(Level.INFO, "Init database successed");
-		else
-			logger.log(Level.WARNING, "Init database failed.\nMessage: " + message);
-		view.fire("init-database-result", message);
 	}
 
 	private void start() {
@@ -124,11 +112,14 @@ public class Control implements IControl{
 			view.fire("login-fail");
 			logger.log(Level.INFO, "Login failed");
 		} else{
+			//log
 			logger.log(Level.INFO, "Login success");
+			//save login info
+			CoreService.getInstance().setLoginInfo(loginInfo);
 			//hide current login
 			view.fire("set-visible", false);
 			//show function list
-			functionWindow = new AllFunction(loginInfo);
+			functionWindow = new AllFunction();
 			logger.log(Level.INFO, "Show main function window");
 			functionWindow.fire("set-visible", true);
 		}

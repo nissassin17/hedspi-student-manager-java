@@ -2,10 +2,13 @@ package org.hedspi.posgresql.hedspi_student_manager.view.contact.address;
 
 import javax.swing.JSplitPane;
 import javax.swing.JScrollPane;
-import javax.swing.JList;
-import javax.swing.JPanel;
 
 public class AddressPanel extends JSplitPane {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Create the panel.

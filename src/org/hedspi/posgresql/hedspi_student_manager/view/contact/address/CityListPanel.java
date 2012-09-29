@@ -1,7 +1,6 @@
 package org.hedspi.posgresql.hedspi_student_manager.view.contact.address;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
@@ -14,6 +13,10 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 
 public class CityListPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField textField;
 
 	/**

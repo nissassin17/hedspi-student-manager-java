@@ -1,12 +1,11 @@
 package org.hedspi.posgresql.hedspi_student_manager.model;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Level;
 
 import org.hedspi.posgresql.hedspi_student_manager.control.Control;
+import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.City;
+import org.hedspi.posgresql.hedspi_student_manager.service.CoreService;
 
 public class Model implements IModel{
 	
@@ -26,34 +25,15 @@ public class Model implements IModel{
 		switch(command){
 		case "check-login":
 			Properties loginInfo = (Properties) data[0];
-			return Service.getInstance().isGoodLogin(loginInfo);
-		case "init-database":
-			/**
-			 * @return "" if only if success
-			 */
-			return initDatabase((LoginInfo)data[0]);
+			return CoreService.isGoodLogin(loginInfo);
+		
+		case "fetchCitiesList":
+			return City.getCities();
 			
 		default:
 			Control.getInstance().getLogger().log(Level.WARNING, "Unsupported getData operation  - " + command + ". Return null");
 			return null;
 		}
-	}
-
-	private String initDatabase(LoginInfo loginInfo) {
-		String url = loginInfo.getUrl();
-		Connection con = null;
-		try {
-			con = DriverManager.getConnection(url);
-		} catch (SQLException e) {
-			return e.getMessage();
-		} finally {
-			if (con != null)
-				try {
-					con.close();
-				} catch (Throwable e){}
-		}
-
-		return "";
 	}
 
 	public static Model getInstance() {

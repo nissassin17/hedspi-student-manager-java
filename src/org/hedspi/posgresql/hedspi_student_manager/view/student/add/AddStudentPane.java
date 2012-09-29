@@ -13,6 +13,11 @@ import java.awt.FlowLayout;
 public class AddStudentPane extends JPanel {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Create the panel.
 	 */
 	public AddStudentPane() {
