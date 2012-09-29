@@ -73,12 +73,12 @@ public class ContactPane extends JPanel {
 		setLayout(new FormLayout(new ColumnSpec[] {
 				ColumnSpec.decode("max(5dlu;default)"),
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("left:62px"),
+				ColumnSpec.decode("left:64px"),
 				ColumnSpec.decode("113px:grow"),
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("max(6dlu;default)"),},
 			new RowSpec[] {
-				RowSpec.decode("max(7dlu;default)"),
+				RowSpec.decode("max(1dlu;default)"),
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("14px"),
 				FormFactory.RELATED_GAP_ROWSPEC,
@@ -98,8 +98,8 @@ public class ContactPane extends JPanel {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("20px"),
 				RowSpec.decode("114px"),
-				RowSpec.decode("119px"),
-				RowSpec.decode("max(79dlu;default)"),
+				RowSpec.decode("max(122px;default)"),
+				RowSpec.decode("81dlu"),
 				RowSpec.decode("53px:grow"),
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("max(7dlu;default)"),}));

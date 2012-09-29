@@ -20,6 +20,9 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import org.hedspi.posgresql.hedspi_student_manager.control.Control;
 import org.hedspi.posgresql.hedspi_student_manager.view.IView;
 import org.hedspi.posgresql.hedspi_student_manager.view.contact.ContactPane;
+import org.hedspi.posgresql.hedspi_student_manager.view.contact.address.AddressPanel;
+import org.hedspi.posgresql.hedspi_student_manager.view.student.StudentPanel;
+import org.hedspi.posgresql.hedspi_student_manager.view.student.add.AddStudentPane;
 import org.hedspi.posgresql.hedspi_student_manager.view.student.add.StudentOtherInfoPanel;
 
 import java.awt.event.WindowAdapter;
@@ -33,6 +36,7 @@ import javax.swing.JLayeredPane;
 import java.awt.Component;
 import javax.swing.border.TitledBorder;
 import com.jgoodies.forms.factories.FormFactory;
+import javax.swing.JSplitPane;
 
 public class AllFunction extends JFrame implements IView{
 
@@ -88,54 +92,11 @@ public class AllFunction extends JFrame implements IView{
 		JTabbedPane tabbedPaneAll = new JTabbedPane(JTabbedPane.LEFT);
 		contentPaneMain.add(tabbedPaneAll, BorderLayout.CENTER);
 		
-		JTabbedPane tabbedPaneStudent = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPaneAll.addTab("Student", null, tabbedPaneStudent, null);
+		StudentPanel panel = new StudentPanel();
+		tabbedPaneAll.addTab("Student", null, panel, null);
 		
-		JScrollPane scrollPaneViewStudent = new JScrollPane();
-		tabbedPaneStudent.addTab("View", null, scrollPaneViewStudent, null);
-		
-		JScrollPane scrollPaneAddStudent = new JScrollPane();
-		tabbedPaneStudent.addTab("Add", null, scrollPaneAddStudent, null);
-		
-		JPanel panel = new JPanel();
-		panel.setAlignmentY(Component.TOP_ALIGNMENT);
-		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		scrollPaneAddStudent.setViewportView(panel);
-		panel.setLayout(new FormLayout(new ColumnSpec[] {
-				FormFactory.UNRELATED_GAP_COLSPEC,
-				FormFactory.GROWING_BUTTON_COLSPEC,
-				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),},
-			new RowSpec[] {
-				FormFactory.UNRELATED_GAP_ROWSPEC,
-				RowSpec.decode("712px:grow"),}));
-		
-		ContactPane panel_1 = new ContactPane();
-		panel.add(panel_1, "2, 2, fill, fill");
-		
-		StudentOtherInfoPanel panel_2 = new StudentOtherInfoPanel();
-		panel.add(panel_2, "4, 2, fill, top");
-		
-		JScrollPane scrollPaneEditStudent = new JScrollPane();
-		tabbedPaneStudent.addTab("Edit", null, scrollPaneEditStudent, null);
-		
-		JTabbedPane tabbedPaneLecturer = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPaneAll.addTab("Lecturer", null, tabbedPaneLecturer, null);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		tabbedPaneLecturer.addTab("View", null, scrollPane, null);
-		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		tabbedPaneLecturer.addTab("Add", null, scrollPane_1, null);
-		
-		JScrollPane scrollPane_2 = new JScrollPane();
-		tabbedPaneLecturer.addTab("Edit", null, scrollPane_2, null);
-		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPaneAll.addTab("Class", null, tabbedPane, null);
-		
-		JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPaneAll.addTab("Course", null, tabbedPane_1, null);
+		AddressPanel panel_1 = new AddressPanel();
+		tabbedPaneAll.addTab("Address", null, panel_1, null);
 	}
 	
     @Override
