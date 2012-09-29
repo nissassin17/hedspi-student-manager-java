@@ -19,7 +19,7 @@ public class AddressService {
 		String query = "SELECT \"CY#\", \"Name\" FROM \"City\"";
 		ArrayList<HashMap<String, Object>> rs = CoreService.getInstance().query(query);
 		for(HashMap<String, Object> it : rs){
-			City city = new City((String)it.get("CY#"), (String)it.get("Name"));
+			City city = new City(String.valueOf((int)it.get("CY#")), (String)it.get("Name"));
 			cities.put(city);
 		}
 		
@@ -28,7 +28,7 @@ public class AddressService {
 		query = "SELECT \"DT#\", \"Name\" FROM \"District\"";
 		rs = CoreService.getInstance().query(query);
 		for(HashMap<String, Object> it : rs){
-			District district = new District((String)it.get("DT#"), (String)it.get("Name"));
+			District district = new District(String.valueOf((int)it.get("DT#")), (String)it.get("Name"));
 			districts.put(district);
 		}
 		
@@ -40,8 +40,8 @@ public class AddressService {
 				"\"District\".\"DT#\" = \"HasDistrict\".\"DT#\"";
 		rs = CoreService.getInstance().query(query);
 		for(HashMap<String, Object> it : rs){
-			String ct = (String)it.get("CY#");
-			String dt = (String)it.get("DT#");
+			String ct = String.valueOf((int)it.get("CY#"));
+			String dt = String.valueOf((int)it.get("DT#"));
 			City city = cities.get(ct);
 			District district = districts.get(dt);
 			if (city != null && district != null){

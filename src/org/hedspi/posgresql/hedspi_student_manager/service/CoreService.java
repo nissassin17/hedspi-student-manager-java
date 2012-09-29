@@ -118,7 +118,7 @@ public class CoreService {
 			int n = rs.getMetaData().getColumnCount();
 			while (rs.next()){
 				HashMap<String, Object> map = new HashMap<>();
-				for(int i = 0; i < n; i++){
+				for(int i = 1; i <= n; i++){
 					String label = rs.getMetaData().getColumnLabel(i);
 					Object val = rs.getObject(i);
 					map.put(label, val);

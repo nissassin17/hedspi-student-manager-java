@@ -36,4 +36,5 @@ public class HedspiObjects<T extends HedspiObject> extends HashMap<String, T> {
 	public void setMyCity(City myCity) {
 		this.myCity = myCity;
 	}
+	
 }
