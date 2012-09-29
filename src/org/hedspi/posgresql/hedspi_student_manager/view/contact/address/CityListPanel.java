@@ -9,8 +9,16 @@ import javax.swing.JLabel;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 import javax.swing.JList;
 import java.awt.FlowLayout;
+
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+
+import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.City;
+import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.ListSelectionModel;
 
 public class CityListPanel extends JPanel {
 	/**
@@ -18,11 +26,16 @@ public class CityListPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTextField textField;
+	private HedspiObjects<City> cities;
+	private DefaultComboBoxModel<City> model;
+	private AddressPanel addressPanel;
 
 	/**
 	 * Create the panel.
 	 */
-	public CityListPanel() {
+	public CityListPanel(HedspiObjects<City> cities, AddressPanel addPanel) {
+		this.addressPanel = addPanel;
+		this.cities = cities;
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("max(91dlu;default):grow"),},
@@ -39,7 +52,19 @@ public class CityListPanel extends JPanel {
 		JLabel lblCitiesList = DefaultComponentFactory.getInstance().createLabel("Cities list");
 		add(lblCitiesList, "2, 2");
 		
-		JList list = new JList();
+		model = new DefaultComboBoxModel<>();
+		for(City it : cities.values())
+			model.addElement(it);
+		JList<City> list = new JList<>(model);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent arg0) {
+				if (!arg0.getValueIsAdjusting()){
+		            JList<City> list = (JList<City>)arg0.getSource();
+				addressPanel.setCity(list.getSelectedValue());
+				}
+			}
+		});
 		add(list, "2, 4, fill, fill");
 		
 		textField = new JTextField();

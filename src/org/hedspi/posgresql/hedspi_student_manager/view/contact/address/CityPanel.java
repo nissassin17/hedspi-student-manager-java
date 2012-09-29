@@ -8,6 +8,7 @@ import com.jgoodies.forms.factories.FormFactory;
 import javax.swing.JLabel;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
@@ -20,6 +21,7 @@ import javax.swing.JButton;
 import org.hedspi.posgresql.hedspi_student_manager.control.Control;
 import org.hedspi.posgresql.hedspi_student_manager.model.Model;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.City;
+import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.District;
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
 
 import java.awt.event.FocusAdapter;
@@ -32,21 +34,25 @@ public class CityPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JTextField textField;
 	private JTextField textField_1;
-	private HedspiObjects<City> cities;
+	private DefaultComboBoxModel<District> model;
+	private City city;
+
+	public City getCity() {
+		return city;
+	}
+
+	public void setCity(City city) {
+		this.city = city;
+		textField_1.setText(city.getName());
+		model.removeAllElements();
+		for(District it : city.getDistricts().values())
+			model.addElement(it);
+	}
 
 	/**
 	 * Create the panel.
 	 */
 	public CityPanel() {
-		addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				if (cities == null)
-					cities = ((HedspiObjects<City>)Model.getInstance().getData("fetchCitiesList"));
-				if (cities == null)
-					JOptionPane.showMessageDialog(arg0.getComponent(), "Failed to fetch list of cities", "Cities list fetching failed", JOptionPane.ERROR_MESSAGE);
-			}
-		});
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("default:grow"),},
@@ -98,7 +104,8 @@ public class CityPanel extends JPanel {
 		JScrollPane scrollPane = new JScrollPane();
 		panel_2.add(scrollPane, "1, 1, fill, fill");
 		
-		JList list = new JList();
+		model = new DefaultComboBoxModel<>();
+		JList<District> list = new JList<>(model);
 		scrollPane.setViewportView(list);
 		
 		JRadioButton rdbtnAddFromExists = new JRadioButton("Add from exists");
@@ -123,12 +130,6 @@ public class CityPanel extends JPanel {
 		
 		JButton btnRemove = new JButton("Remove");
 		panel.add(btnRemove);
-		
-		JButton btnCommit = new JButton("Commit");
-		panel.add(btnCommit);
-		
-		JButton btnCancel = new JButton("Cancel");
-		panel.add(btnCancel);
 
 	}
 

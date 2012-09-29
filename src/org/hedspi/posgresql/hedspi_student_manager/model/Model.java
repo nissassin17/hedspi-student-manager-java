@@ -27,7 +27,7 @@ public class Model implements IModel{
 			Properties loginInfo = (Properties) data[0];
 			return CoreService.isGoodLogin(loginInfo);
 		
-		case "fetchCitiesList":
+		case "getCitiesList":
 			return City.getCities();
 			
 		default:
