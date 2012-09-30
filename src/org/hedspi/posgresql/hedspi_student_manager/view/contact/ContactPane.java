@@ -1,5 +1,6 @@
 package org.hedspi.posgresql.hedspi_student_manager.view.contact;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
@@ -8,6 +9,10 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.border.TitledBorder;
 
+import org.hedspi.posgresql.hedspi_student_manager.model.Model;
+import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.City;
+import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.District;
+import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
 import org.hedspi.posgresql.hedspi_student_manager.view.util.list.ListEditor;
 
 import com.jgoodies.forms.factories.DefaultComponentFactory;
@@ -15,6 +20,8 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ContactPane extends JPanel {
 	/**
@@ -25,6 +32,21 @@ public class ContactPane extends JPanel {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
+	private DefaultComboBoxModel<City> citiesModel;
+	private DefaultComboBoxModel<District> districtModel;
+
+	public void setCities(HedspiObjects<City> cities) {
+		citiesModel.removeAllElements();
+		for(City it : cities.getSortedListIgnoreCase())
+			citiesModel.addElement(it);
+	}
+	
+	private void setCity(City currentCity) {
+		districtModel.removeAllElements();
+		for(District it : currentCity.getDistricts().getSortedListIgnoreCase())
+			districtModel.addElement(it);
+	}
+
 
 	/**
 	 * Create the panel.
@@ -50,7 +72,8 @@ public class ContactPane extends JPanel {
 		
 		JLabel label_9 = new JLabel("Address");
 		
-		JComboBox comboBox = new JComboBox();
+		districtModel = new DefaultComboBoxModel<>();
+		JComboBox<District> comboBox = new JComboBox<>(districtModel);
 		
 		JToggleButton toggleButton = new JToggleButton("Male");
 		
@@ -67,7 +90,17 @@ public class ContactPane extends JPanel {
 		textField_3.setEditable(false);
 		textField_3.setColumns(10);
 		
-		JComboBox comboBox_1 = new JComboBox();
+		citiesModel = new DefaultComboBoxModel<>();
+		JComboBox<City> comboBox_1 = new JComboBox<>(citiesModel);
+		comboBox_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JComboBox<City> cities = (JComboBox<City>)arg0.getSource();
+				City currentCity = cities.getItemAt(cities.getSelectedIndex());
+				setCity(currentCity);
+			}
+
+		});
+		setCities((HedspiObjects<City>)Model.getInstance().getData("getCitiesList"));
 		
 		ListEditor panel = new ListEditor();
 		setLayout(new FormLayout(new ColumnSpec[] {

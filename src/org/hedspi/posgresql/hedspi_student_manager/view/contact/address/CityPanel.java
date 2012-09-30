@@ -1,31 +1,28 @@
 package org.hedspi.posgresql.hedspi_student_manager.view.contact.address;
 
-import javax.swing.JPanel;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.factories.FormFactory;
-import javax.swing.JLabel;
-import com.jgoodies.forms.factories.DefaultComponentFactory;
+import java.awt.FlowLayout;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JList;
-import javax.swing.JRadioButton;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
-import java.awt.FlowLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
-import org.hedspi.posgresql.hedspi_student_manager.control.Control;
-import org.hedspi.posgresql.hedspi_student_manager.model.Model;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.City;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.District;
-import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
 
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import com.jgoodies.forms.factories.DefaultComponentFactory;
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.RowSpec;
 
 public class CityPanel extends JPanel {
 	/**
@@ -45,7 +42,7 @@ public class CityPanel extends JPanel {
 		this.city = city;
 		textField_1.setText(city.getName());
 		model.removeAllElements();
-		for(District it : city.getDistricts().values())
+		for(District it : city.getDistricts().getSortedListIgnoreCase())
 			model.addElement(it);
 	}
 
@@ -79,7 +76,9 @@ public class CityPanel extends JPanel {
 		panel_1.setLayout(new FormLayout(new ColumnSpec[] {
 				ColumnSpec.decode("56px"),
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-				ColumnSpec.decode("86px:grow"),},
+				ColumnSpec.decode("86px:grow"),
+				FormFactory.RELATED_GAP_COLSPEC,
+				FormFactory.DEFAULT_COLSPEC,},
 			new RowSpec[] {
 				FormFactory.LINE_GAP_ROWSPEC,
 				RowSpec.decode("20px"),}));
@@ -90,6 +89,9 @@ public class CityPanel extends JPanel {
 		textField_1 = new JTextField();
 		panel_1.add(textField_1, "3, 2, fill, top");
 		textField_1.setColumns(10);
+		
+		JButton btnSave = new JButton("Save");
+		panel_1.add(btnSave, "5, 2");
 		
 		JLabel lblDistrictList = DefaultComponentFactory.getInstance().createLabel("Districts list");
 		add(lblDistrictList, "2, 4, left, top");
