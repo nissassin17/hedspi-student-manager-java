@@ -1,10 +1,7 @@
 package org.hedspi.posgresql.hedspi_student_manager.view.contact.address;
 
 import java.awt.FlowLayout;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -17,14 +14,17 @@ import javax.swing.JTextField;
 
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.City;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.District;
+import org.hedspi.posgresql.hedspi_student_manager.view.util.list.IObjectViewPanel;
 
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
-public class CityPanel extends JPanel {
+public class CityPanel extends JPanel implements IObjectViewPanel<City> {
 	/**
 	 * 
 	 */
@@ -33,6 +33,7 @@ public class CityPanel extends JPanel {
 	private JTextField textField_1;
 	private DefaultComboBoxModel<District> model;
 	private City city;
+	private JComboBox<District> comboBox;
 
 	public City getCity() {
 		return city;
@@ -52,7 +53,7 @@ public class CityPanel extends JPanel {
 	public CityPanel() {
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),},
+				ColumnSpec.decode("136dlu:grow"),},
 			new RowSpec[] {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
@@ -111,15 +112,28 @@ public class CityPanel extends JPanel {
 		scrollPane.setViewportView(list);
 		
 		JRadioButton rdbtnAddFromExists = new JRadioButton("Add from exists");
+		rdbtnAddFromExists.setSelected(true);
+		rdbtnAddFromExists.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				JRadioButton btn = (JRadioButton)arg0.getSource();
+				comboBox.setEnabled(btn.isSelected());
+			}
+		});
 		add(rdbtnAddFromExists, "2, 8");
 		
-		JComboBox comboBox = new JComboBox();
+		comboBox = new JComboBox<>();
 		add(comboBox, "2, 10, fill, default");
 		
 		JRadioButton rdbtnAddNew = new JRadioButton("Add new");
+		rdbtnAddNew.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				textField.setEnabled(((JRadioButton)e.getSource()).isSelected());
+			}
+		});
 		add(rdbtnAddNew, "2, 12");
 		
 		textField = new JTextField();
+		textField.setEnabled(false);
 		add(textField, "2, 14, fill, default");
 		textField.setColumns(10);
 		
@@ -132,7 +146,16 @@ public class CityPanel extends JPanel {
 		
 		JButton btnRemove = new JButton("Remove");
 		panel.add(btnRemove);
+		
+		ButtonGroup buttonGroup = new ButtonGroup();
+		buttonGroup.add(rdbtnAddNew);
+		buttonGroup.add(rdbtnAddFromExists);
 
+	}
+
+	@Override
+	public void setObject(City obj) {
+		setCity(obj);
 	}
 
 }

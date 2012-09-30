@@ -1,5 +1,6 @@
 package org.hedspi.posgresql.hedspi_student_manager.model.hedspi;
 
+
 public class NewLineListManipulator extends java.util.ArrayList<String> {
 
 	/**
@@ -28,5 +29,5 @@ public class NewLineListManipulator extends java.util.ArrayList<String> {
 				result += super.get(i) + "\n";
 		return result;
 	}
-
+	
 }
