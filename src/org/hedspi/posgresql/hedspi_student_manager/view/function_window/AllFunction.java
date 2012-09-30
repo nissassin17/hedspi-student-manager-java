@@ -1,29 +1,26 @@
 package org.hedspi.posgresql.hedspi_student_manager.view.function_window;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.logging.Level;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 
 import org.hedspi.posgresql.hedspi_student_manager.control.Control;
-import org.hedspi.posgresql.hedspi_student_manager.model.Model;
-import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.City;
-import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
 import org.hedspi.posgresql.hedspi_student_manager.view.IView;
 import org.hedspi.posgresql.hedspi_student_manager.view.contact.address.AddressPanel;
 import org.hedspi.posgresql.hedspi_student_manager.view.help.about.AboutBox;
 import org.hedspi.posgresql.hedspi_student_manager.view.student.StudentPanel;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class AllFunction extends JFrame implements IView {
 
@@ -102,8 +99,7 @@ public class AllFunction extends JFrame implements IView {
 		StudentPanel panel = new StudentPanel();
 		tabbedPaneAll.addTab("Student", null, panel, null);
 
-		AddressPanel panel_1 = new AddressPanel((HedspiObjects<City>) Model
-				.getInstance().getData("getCitiesList"));
+		AddressPanel panel_1 = new AddressPanel();
 		tabbedPaneAll.addTab("Address", null, panel_1, null);
 	}
 

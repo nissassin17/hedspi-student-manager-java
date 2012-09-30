@@ -1,5 +1,8 @@
 package org.hedspi.posgresql.hedspi_student_manager.model.hedspi;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.City;
@@ -15,7 +18,6 @@ public class HedspiObjects<T extends HedspiObject> extends HashMap<String, T> {
 	public static final String NAME_CODE = "Name";
 	
 	private String name;
-	private City myCity;
 
 	public void put(T value){
 		super.put(value.getId(), value);
@@ -29,12 +31,29 @@ public class HedspiObjects<T extends HedspiObject> extends HashMap<String, T> {
 		this.name = name;
 	}
 
-	public City getMyCity() {
-		return myCity;
+	public ArrayList<T> getSortedList(){
+		ArrayList<T> arr = new ArrayList<>();
+		for(T it : super.values())
+			arr.add(it);
+		Collections.sort(arr, new Comparator<T>(){
+
+			@Override
+			public int compare(T arg0, T arg1) {
+				return arg0.toString().compareTo(arg1.toString());
+			}});
+		return arr;
+	}
+	public ArrayList<T> getSortedListIgnoreCase(){
+		ArrayList<T> arr = new ArrayList<>();
+		for(T it : super.values())
+			arr.add(it);
+		Collections.sort(arr, new Comparator<T>(){
+
+			@Override
+			public int compare(T arg0, T arg1) {
+				return arg0.toString().compareToIgnoreCase(arg1.toString());
+			}});
+		return arr;
 	}
 
-	public void setMyCity(City myCity) {
-		this.myCity = myCity;
-	}
-	
 }
