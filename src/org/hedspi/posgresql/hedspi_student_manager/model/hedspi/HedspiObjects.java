@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
-import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.City;
-
 public class HedspiObjects<T extends HedspiObject> extends HashMap<String, T> {
 
 	/**

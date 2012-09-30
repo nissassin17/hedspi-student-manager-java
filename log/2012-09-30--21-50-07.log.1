@@ -1,0 +1,62 @@
+Sep 30, 2012 9:50:07 PM org.hedspi.posgresql.hedspi_student_manager.control.Control start
+INFO: System starts
+Sep 30, 2012 9:50:07 PM org.hedspi.posgresql.hedspi_student_manager.control.Control start
+INFO: Open login window
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.control.Control tryLogin
+INFO: Try login
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.control.Control tryLogin
+INFO: Login success
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.AddressService getAddresses
+INFO: Fetch list of cities from database
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.AddressService getAddresses
+INFO: Fetch list of cities
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.CoreService query
+INFO: Execute query SELECT "CY#", "Name" FROM "City" order by "Name"
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.AddressService getAddresses
+INFO: Fetch list of districts
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.CoreService query
+INFO: Execute query SELECT "DT#", "Name" FROM "District" order by "Name"
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.AddressService getAddresses
+INFO: Connect districts and cities
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.CoreService query
+INFO: Execute query select "HasDistrict"."DT#", "HasDistrict"."CY#" 
+from "City", "District", "HasDistrict" 
+where 
+"City"."CY#" = "HasDistrict"."CY#" AND 
+"District"."DT#" = "HasDistrict"."DT#" 
+order by "District"."Name"
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.ClassService getClasses
+INFO: Fetch class list. Do not get student list now, because it could make infinite recursive
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.CoreService query
+INFO: Execute query select "CL#", "Name" from "Class"
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.StudentService getStudentList
+INFO: Fetch raw data of students' list
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.CoreService query
+INFO: Execute query select "ST#", "EnrollPoint", "EnrollYear" from "Student"
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.StudentService getStudentList
+INFO: Fetch students' contact detail
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.ContactService getContacts
+INFO: Fetch raw data of contacts
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.CoreService query
+INFO: Execute query select "FirstName", "LastName", "Sex", "DOB", "Email", "Phone", "ImageUrl", "Notes", "Home", "CT#"
+from "Contact"
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.ContactService getContacts
+INFO: Fetch address (city and district) of contact
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.ContactService getContacts
+INFO: Fetch get city of contact
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.CoreService query
+INFO: Execute query select "CT#", "CY#" from "AtCity"
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.ContactService getContacts
+INFO: Fetch district of contact
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.CoreService query
+INFO: Execute query select "DT#", "CT#" from "AtDistrict"
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.CoreService query
+INFO: Execute query select "CT#", "ST#" from "InfoOfStudent"
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.StudentService getStudentList
+INFO: Fetch classes of students
+Sep 30, 2012 9:50:10 PM org.hedspi.posgresql.hedspi_student_manager.service.CoreService query
+INFO: Execute query select "ST#", "CL#" from "IsStudentOf"
+Sep 30, 2012 9:50:11 PM org.hedspi.posgresql.hedspi_student_manager.control.Control tryLogin
+INFO: Show main function window
+Sep 30, 2012 9:50:17 PM org.hedspi.posgresql.hedspi_student_manager.control.Control fire
+INFO: System exits

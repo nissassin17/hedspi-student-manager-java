@@ -15,6 +15,7 @@ public class AddressService {
 		Control.getInstance().getLogger().log(Level.INFO, "Fetch list of cities from database");
 
 		//list of cities
+		Control.getInstance().getLogger().log(Level.INFO, "Fetch list of cities");
 		HedspiObjects<City> cities = new HedspiObjects<>();
 		String query = "SELECT \"CY#\", \"Name\" FROM \"City\" order by \"Name\"";
 		ArrayList<HashMap<String, Object>> rs = CoreService.getInstance().query(query);
@@ -24,6 +25,7 @@ public class AddressService {
 		}
 		
 		//list of district
+		Control.getInstance().getLogger().log(Level.INFO, "Fetch list of districts");
 		HedspiObjects<District> districts = new HedspiObjects<>();
 		query = "SELECT \"DT#\", \"Name\" FROM \"District\" order by \"Name\"";
 		rs = CoreService.getInstance().query(query);
@@ -33,6 +35,7 @@ public class AddressService {
 		}
 		
 		//connect
+		Control.getInstance().getLogger().log(Level.INFO, "Connect districts and cities");
 		query = "select \"HasDistrict\".\"DT#\", \"HasDistrict\".\"CY#\" \n" + 
 				"from \"City\", \"District\", \"HasDistrict\" \n" +
 				"where \n" +

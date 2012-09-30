@@ -4,7 +4,9 @@ import java.util.Date;
 
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.Address;
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObject;
+import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.NewLineListManipulator;
+import org.hedspi.posgresql.hedspi_student_manager.service.ContactService;
 
 public class Contact extends HedspiObject {
 	
@@ -96,6 +98,22 @@ public class Contact extends HedspiObject {
 	private NewLineListManipulator image;
 	private NewLineListManipulator phone;
 	private Date dob;
+	private static HedspiObjects<Contact> contacts;
+	private boolean isMan;//true if is man
+
+	public boolean isMan() {
+		return isMan;
+	}
+
+	public void setMan(boolean isMan) {
+		this.isMan = isMan;
+	}
+
+	public static HedspiObjects<Contact> getContacts() {
+		if (contacts == null)
+			contacts = ContactService.getContacts();
+		return contacts;
+	}
 
 	public Contact(String id) {
 		super(id);

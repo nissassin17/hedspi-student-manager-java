@@ -1,14 +1,14 @@
-package org.hedspi.posgresql.hedspi_student_manager.view.student;
+package org.hedspi.posgresql.hedspi_student_manager.view.classview;
 
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JScrollPane;
 
 import org.hedspi.posgresql.hedspi_student_manager.model.Model;
-import org.hedspi.posgresql.hedspi_student_manager.model.contact.Student;
+import org.hedspi.posgresql.hedspi_student_manager.model.academic.HedspiClass;
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
 import org.hedspi.posgresql.hedspi_student_manager.view.util.list.ObjectListPanel;
 
-public class StudentPanel extends JSplitPane {
+public class ClassPanel extends JSplitPane {
 
 	/**
 	 * 
@@ -18,16 +18,15 @@ public class StudentPanel extends JSplitPane {
 	/**
 	 * Create the panel.
 	 */
-	public StudentPanel() {
-		
-		StudentViewPane panel_1 = new StudentViewPane();
+	public ClassPanel() {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		setLeftComponent(scrollPane);
 		
-		ObjectListPanel<Student> panel = new ObjectListPanel<Student>(panel_1);
-		panel.setList(((HedspiObjects<Student>)Model.getInstance().getData("getStudentsList")).getSortedListIgnoreCase());
+		ClassViewPanel panel_1 = new ClassViewPanel();
+		ObjectListPanel<HedspiClass> panel = new ObjectListPanel<HedspiClass>(panel_1);
 		scrollPane.setViewportView(panel);
+		panel.setList(((HedspiObjects<HedspiClass>)Model.getInstance().getData("getClassList")).getSortedListIgnoreCase());
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		setRightComponent(scrollPane_1);

@@ -1,4 +1,6 @@
-package org.hedspi.posgresql.hedspi_student_manager.view.student.add;
+package org.hedspi.posgresql.hedspi_student_manager.view.student;
+
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import com.jgoodies.forms.layout.FormLayout;
@@ -7,18 +9,29 @@ import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
 import javax.swing.JLabel;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
+
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
+
+import org.hedspi.posgresql.hedspi_student_manager.model.Model;
+import org.hedspi.posgresql.hedspi_student_manager.model.academic.HedspiClass;
+import org.hedspi.posgresql.hedspi_student_manager.model.contact.Student;
+import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
+
+import javax.swing.JSpinner;
 
 public class StudentOtherInfoPanel extends JPanel {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField textFieldEnrollPoint;
+	private JTextField textFieldID;
+	private JSpinner spinnerEnrollYear;
+	private JComboBox<HedspiClass> comboBoxClass;
+	private DefaultComboBoxModel<HedspiClass> classModel;
 
 	/**
 	 * Create the panel.
@@ -46,31 +59,52 @@ public class StudentOtherInfoPanel extends JPanel {
 		lblStudentIdentity.setDisplayedMnemonic('i');
 		add(lblStudentIdentity, "2, 2, right, default");
 		
-		textField_2 = new JTextField();
-		add(textField_2, "4, 2, fill, default");
-		textField_2.setColumns(10);
+		textFieldID = new JTextField();
+		add(textFieldID, "4, 2, fill, default");
+		textFieldID.setColumns(10);
 		
 		JLabel lblClass = DefaultComponentFactory.getInstance().createLabel("Class*");
 		lblClass.setDisplayedMnemonic('c');
 		add(lblClass, "2, 4, right, default");
 		
-		JComboBox comboBox = new JComboBox();
-		add(comboBox, "4, 4, fill, default");
+		classModel = new DefaultComboBoxModel<HedspiClass>();
+		comboBoxClass = new JComboBox<>(classModel);
+		setClasses(((HedspiObjects<HedspiClass>)Model.getInstance().getData("getClassList")).getSortedListIgnoreCase());
+		add(comboBoxClass, "4, 4, fill, default");
 		
 		JLabel lblEntrollPoint = DefaultComponentFactory.getInstance().createLabel("Entroll point*");
 		add(lblEntrollPoint, "2, 6, right, default");
 		
-		textField = new JTextField();
-		add(textField, "4, 6, fill, default");
-		textField.setColumns(10);
+		textFieldEnrollPoint = new JTextField();
+		add(textFieldEnrollPoint, "4, 6, fill, default");
+		textFieldEnrollPoint.setColumns(10);
 		
 		JLabel lblEntrollYear = DefaultComponentFactory.getInstance().createLabel("Entroll year*");
 		add(lblEntrollYear, "2, 8, right, default");
 		
-		textField_1 = new JTextField();
-		add(textField_1, "4, 8, fill, default");
-		textField_1.setColumns(10);
+		spinnerEnrollYear = new JSpinner();
+		add(spinnerEnrollYear, "4, 8");
 
 	}
 
+	private void setClasses(ArrayList<HedspiClass> sortedListIgnoreCase) {
+		classModel.removeAllElements();
+		for(HedspiClass it : sortedListIgnoreCase)
+			classModel.addElement(it);
+	}
+
+	public void setStudent(Student obj) {
+		textFieldID.setText(obj.getId());
+		textFieldEnrollPoint.setText(String.valueOf(obj.getEnrollPoint()));
+		spinnerEnrollYear.setValue(obj.getEnrollYear());
+		getComboBoxClass().setSelectedItem(obj.getMyClass());
+	}
+
+	protected JComboBox<HedspiClass> getComboBoxClass() {
+		return comboBoxClass;
+	}
+	
+	public void setClass(HedspiClass cl){
+		getComboBoxClass().setSelectedItem(cl);
+	}
 }

@@ -30,22 +30,6 @@ public class AllFunction extends JFrame implements IView {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPaneMain;
 
-	/**
-	 * Launch the application.
-	 */
-	// public static void main(String[] args) {
-	// EventQueue.invokeLater(new Runnable() {
-	// public void run() {
-	// try {
-	// AllFunction frame = new AllFunction();
-	// frame.setVisible(true);
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// }
-	// });
-	// }
-
 	private JFrame getFrame() {
 		return this;
 	}
@@ -101,6 +85,9 @@ public class AllFunction extends JFrame implements IView {
 
 		AddressPanel panel_1 = new AddressPanel();
 		tabbedPaneAll.addTab("Address", null, panel_1, null);
+
+		org.hedspi.posgresql.hedspi_student_manager.view.classview.ClassPanel splitPane = new org.hedspi.posgresql.hedspi_student_manager.view.classview.ClassPanel();
+		tabbedPaneAll.addTab("Class", null, splitPane, null);
 	}
 
 	@Override
@@ -112,10 +99,10 @@ public class AllFunction extends JFrame implements IView {
 
 		default:
 			Control.getInstance()
-					.getLogger()
-					.log(Level.WARNING,
-							"You have called FunctionWindow an operation that is not supported.\nCommand: {0}",
-							command);
+			.getLogger()
+			.log(Level.WARNING,
+					"You have called FunctionWindow an operation that is not supported.\nCommand: {0}",
+					command);
 			break;
 		}
 	}

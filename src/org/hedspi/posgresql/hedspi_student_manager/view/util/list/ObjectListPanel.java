@@ -1,8 +1,9 @@
-package org.hedspi.posgresql.hedspi_student_manager.view.contact.address;
+package org.hedspi.posgresql.hedspi_student_manager.view.util.list;
 
 import java.awt.FlowLayout;
+import java.util.ArrayList;
 
-import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -12,40 +13,39 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.hedspi.posgresql.hedspi_student_manager.model.Model;
-import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.City;
-import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
-
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
+import javax.swing.JScrollPane;
 
-public class CityListPanel extends JPanel {
+public class ObjectListPanel<T extends Object> extends JPanel {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTextField textField;
-	public void setCities(HedspiObjects<City> cities) {
+	public void setList(ArrayList<T> data) {
 		model.removeAllElements();
-		for(City it : cities.getSortedListIgnoreCase())
+		for(T it : data)
 			model.addElement(it);
 	}
 
-	private DefaultComboBoxModel<City> model;
-	private AddressPanel addressPanel;
+	private DefaultListModel<T> model;
+	private IObjectViewPanel<T> viewPanel;
 
 	/**
 	 * Create the panel.
 	 */
-	public CityListPanel(AddressPanel addPanel) {
-		this.addressPanel = addPanel;
+	public ObjectListPanel(IObjectViewPanel<T> viewPanelArg) {
+		this.viewPanel = viewPanelArg;
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("max(91dlu;default):grow"),},
 			new RowSpec[] {
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
@@ -55,29 +55,35 @@ public class CityListPanel extends JPanel {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
-		JLabel lblCitiesList = DefaultComponentFactory.getInstance().createLabel("Cities list");
-		add(lblCitiesList, "2, 2");
+		JLabel lblCitiesList = DefaultComponentFactory.getInstance().createLabel("Values list");
+		add(lblCitiesList, "2, 4");
 		
-		model = new DefaultComboBoxModel<>();
-		JList<City> list = new JList<>(model);
-		setCities((HedspiObjects<City>)Model.getInstance().getData("getCitiesList"));
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.addListSelectionListener(new ListSelectionListener() {
+		model = new DefaultListModel<>();
+		
+		JScrollPane scrollPane = new JScrollPane();
+		add(scrollPane, "2, 6, fill, fill");
+		JList<T> list_1 = new JList<>(model);
+		scrollPane.setViewportView(list_1);
+		list_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list_1.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent arg0) {
 				if (!arg0.getValueIsAdjusting()){
-		            JList<City> list = (JList<City>)arg0.getSource();
-				addressPanel.setCity(list.getSelectedValue());
+		            JList<T> list = (JList<T>)arg0.getSource();
+		            if (list.getSelectedValue() != null)
+		            	viewPanel.setObject(list.getSelectedValue());
 				}
 			}
 		});
-		add(list, "2, 4, fill, fill");
+		
+		SortBox<T> panel_1 = new SortBox<>(model);
+		add(panel_1, "2, 2, fill, top");
 		
 		textField = new JTextField();
-		add(textField, "2, 6, fill, top");
+		add(textField, "2, 8, fill, top");
 		textField.setColumns(10);
 		
 		JPanel panel = new JPanel();
-		add(panel, "2, 8, center, top");
+		add(panel, "2, 10, center, top");
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JButton btnAdd = new JButton("Add");

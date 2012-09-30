@@ -4,6 +4,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import org.hedspi.posgresql.hedspi_student_manager.control.Control;
+import org.hedspi.posgresql.hedspi_student_manager.model.academic.HedspiClass;
+import org.hedspi.posgresql.hedspi_student_manager.model.contact.Student;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.City;
 import org.hedspi.posgresql.hedspi_student_manager.service.CoreService;
 
@@ -29,6 +31,12 @@ public class Model implements IModel{
 		
 		case "getCitiesList":
 			return City.getCities();
+			
+		case "getStudentsList":
+			return Student.getStudents();
+			
+		case "getClassList":
+			return HedspiClass.getClasses();
 			
 		default:
 			Control.getInstance().getLogger().log(Level.WARNING, "Unsupported getData operation  - " + command + ". Return null");

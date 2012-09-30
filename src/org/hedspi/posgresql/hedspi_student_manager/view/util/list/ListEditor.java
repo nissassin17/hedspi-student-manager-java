@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import org.eclipse.wb.swing.FocusTraversalOnArray;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -35,24 +36,27 @@ public class ListEditor extends JPanel {
 	 * Create the panel.
 	 */
 	public ListEditor() {
-		setLayout(new MigLayout("", "[82.00px:201.00px:669.00px,grow][49.00:43.00:423.00]", "[:24.00px:33.00px][241.00,grow]"));
-		
+		setLayout(new MigLayout("",
+				"[82.00px:201.00px:669.00px,grow][49.00:43.00:423.00]",
+				"[:24.00px:33.00px][241.00,grow]"));
+
 		textField = new JTextField();
 		textField.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
-				JTextField textField = (JTextField)arg0.getComponent();
+				JTextField textField = (JTextField) arg0.getComponent();
 				textField.selectAll();
 			}
+
 			@Override
 			public void focusLost(FocusEvent e) {
-				JTextField textField = (JTextField)e.getComponent();
+				JTextField textField = (JTextField) e.getComponent();
 				textField.select(0, 0);
 			}
 		});
 		add(textField, "cell 0 0,grow");
 		textField.setColumns(10);
-		
+
 		JButton btnAdd = new JButton("+");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -64,26 +68,22 @@ public class ListEditor extends JPanel {
 			}
 		});
 		add(btnAdd, "cell 1 0,growx,aligny center");
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "cell 0 1,grow");
-		
+
 		listModel = new DefaultListModel<>();
 		list = new JList<>(listModel);
 		scrollPane.setViewportView(list);
-		
+
 		JPanel panel = new JPanel();
 		add(panel, "flowx,cell 1 1,grow");
-		panel.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("39px:grow"),},
-			new RowSpec[] {
-				FormFactory.LINE_GAP_ROWSPEC,
-				RowSpec.decode("23px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,}));
-		
+		panel.setLayout(new FormLayout(new ColumnSpec[] { ColumnSpec
+				.decode("39px:grow"), }, new RowSpec[] {
+				FormFactory.LINE_GAP_ROWSPEC, RowSpec.decode("23px"),
+				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, }));
+
 		JButton button = new JButton("{}");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -91,7 +91,7 @@ public class ListEditor extends JPanel {
 			}
 		});
 		panel.add(button, "1, 2, fill, top");
-		
+
 		JButton btnRemove = new JButton("-");
 		panel.add(btnRemove, "1, 4, fill, top");
 		btnRemove.addActionListener(new ActionListener() {
@@ -99,20 +99,27 @@ public class ListEditor extends JPanel {
 				int[] selected = list.getSelectedIndices();
 				ArrayList<String> arr = new ArrayList<>();
 				boolean[] mark = new boolean[listModel.getSize()];
-				for(int i = 0; i < listModel.getSize(); i++)
+				for (int i = 0; i < listModel.getSize(); i++)
 					mark[i] = false;
-				for(int i = 0; i < selected.length; i++)
+				for (int i = 0; i < selected.length; i++)
 					mark[selected[i]] = true;
-				for(int i = 0; i < listModel.getSize(); i++)
+				for (int i = 0; i < listModel.getSize(); i++)
 					if (!mark[i])
 						arr.add(listModel.getElementAt(i));
 				listModel.removeAllElements();
-				for(String it : arr)
+				for (String it : arr)
 					listModel.addElement(it);
 			}
 		});
-		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{textField, btnAdd, btnRemove, scrollPane}));
+		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] {
+				textField, btnAdd, btnRemove, scrollPane }));
 
+	}
+
+	public void setValues(ArrayList<String> values) {
+		listModel.clear();
+		for(String it : values)
+			listModel.addElement(it);
 	}
 
 }

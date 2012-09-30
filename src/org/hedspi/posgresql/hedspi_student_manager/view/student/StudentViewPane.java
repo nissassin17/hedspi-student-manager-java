@@ -1,7 +1,11 @@
-package org.hedspi.posgresql.hedspi_student_manager.view.student.add;
+package org.hedspi.posgresql.hedspi_student_manager.view.student;
 
 import javax.swing.JPanel;
+
+import org.hedspi.posgresql.hedspi_student_manager.model.contact.Student;
 import org.hedspi.posgresql.hedspi_student_manager.view.contact.ContactPane;
+import org.hedspi.posgresql.hedspi_student_manager.view.util.list.IObjectViewPanel;
+
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.factories.FormFactory;
@@ -10,17 +14,19 @@ import javax.swing.JButton;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 
-public class AddStudentPane extends JPanel {
+public class StudentViewPane extends JPanel implements IObjectViewPanel<Student> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private StudentOtherInfoPanel studentOtherInfoPanel;
+	private ContactPane panel;
 
 	/**
 	 * Create the panel.
 	 */
-	public AddStudentPane() {
+	public StudentViewPane() {
 		setAutoscrolls(true);
 		setPreferredSize(new Dimension(491, 700));
 		setLayout(new FormLayout(new ColumnSpec[] {
@@ -34,7 +40,7 @@ public class AddStudentPane extends JPanel {
 				FormFactory.LINE_GAP_ROWSPEC,
 				RowSpec.decode("fill:454px:grow"),}));
 		
-		ContactPane panel = new ContactPane();
+		panel = new ContactPane();
 		add(panel, "2, 2, fill, fill");
 		
 		JPanel panel_1 = new JPanel();
@@ -49,7 +55,7 @@ public class AddStudentPane extends JPanel {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
-		StudentOtherInfoPanel studentOtherInfoPanel = new StudentOtherInfoPanel();
+		studentOtherInfoPanel = new StudentOtherInfoPanel();
 		panel_1.add(studentOtherInfoPanel, "2, 2, fill, top");
 		
 		JPanel panel_2 = new JPanel();
@@ -62,6 +68,16 @@ public class AddStudentPane extends JPanel {
 		JButton btnCommit = new JButton("Commit");
 		panel_2.add(btnCommit);
 
+	}
+
+	@Override
+	public void setObject(Student obj) {
+		setStudent(obj);
+	}
+
+	private void setStudent(Student obj) {
+		studentOtherInfoPanel.setStudent(obj);
+		panel.setContact(obj.getContact());
 	}
 
 }

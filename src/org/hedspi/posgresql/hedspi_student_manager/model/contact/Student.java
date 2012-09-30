@@ -2,6 +2,8 @@ package org.hedspi.posgresql.hedspi_student_manager.model.contact;
 
 import org.hedspi.posgresql.hedspi_student_manager.model.academic.HedspiClass;
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObject;
+import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
+import org.hedspi.posgresql.hedspi_student_manager.service.StudentService;
 
 public class Student extends HedspiObject {
 	
@@ -54,6 +56,13 @@ public class Student extends HedspiObject {
 	private double enrollPoint;
 	private int enrollYear;
 	private HedspiClass myClass;
+	private static HedspiObjects<Student> students;
+
+	public static HedspiObjects<Student> getStudents() {
+		if (students == null)
+			students = StudentService.getStudentList();
+		return students;
+	}
 
 	public Student(String id) {
 		super(id);
