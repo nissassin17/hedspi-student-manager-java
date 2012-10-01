@@ -25,7 +25,6 @@ public class ObjectListPanel<T extends Object> extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTextField textField;
 	public void setList(ArrayList<T> data) {
 		model.removeAllElements();
 		for(T it : data)
@@ -50,8 +49,6 @@ public class ObjectListPanel<T extends Object> extends JPanel {
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("max(97dlu;default):grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
@@ -78,12 +75,8 @@ public class ObjectListPanel<T extends Object> extends JPanel {
 		SortBox<T> panel_1 = new SortBox<>(model);
 		add(panel_1, "2, 2, fill, top");
 		
-		textField = new JTextField();
-		add(textField, "2, 8, fill, top");
-		textField.setColumns(10);
-		
 		JPanel panel = new JPanel();
-		add(panel, "2, 10, center, top");
+		add(panel, "2, 8, center, top");
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JButton btnAdd = new JButton("Add");

@@ -45,7 +45,7 @@ public class ClassViewPanel extends JPanel implements IObjectViewPanel<HedspiCla
 		JPanel panel = new JPanel();
 		add(panel, "2, 2, fill, fill");
 		panel.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("54px"),
+				ColumnSpec.decode("71px"),
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
 				ColumnSpec.decode("86px:grow"),
 				FormFactory.RELATED_GAP_COLSPEC,
