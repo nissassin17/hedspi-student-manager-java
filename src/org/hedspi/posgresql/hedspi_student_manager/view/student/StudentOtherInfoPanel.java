@@ -9,6 +9,7 @@ import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
 import javax.swing.JLabel;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
+import com.toedter.calendar.JYearChooser;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -29,7 +30,7 @@ public class StudentOtherInfoPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JTextField textFieldEnrollPoint;
 	private JTextField textFieldID;
-	private JSpinner spinnerEnrollYear;
+	private JYearChooser spinnerEnrollYear;
 	private JComboBox<HedspiClass> comboBoxClass;
 	private DefaultComboBoxModel<HedspiClass> classModel;
 
@@ -82,7 +83,7 @@ public class StudentOtherInfoPanel extends JPanel {
 		JLabel lblEntrollYear = DefaultComponentFactory.getInstance().createLabel("Entroll year*");
 		add(lblEntrollYear, "2, 8, right, default");
 		
-		spinnerEnrollYear = new JSpinner();
+		spinnerEnrollYear = new JYearChooser();
 		add(spinnerEnrollYear, "4, 8");
 
 	}
@@ -96,7 +97,7 @@ public class StudentOtherInfoPanel extends JPanel {
 	public void setStudent(Student obj) {
 		textFieldID.setText(obj.getId());
 		textFieldEnrollPoint.setText(String.valueOf(obj.getEnrollPoint()));
-		spinnerEnrollYear.setValue(obj.getEnrollYear());
+		spinnerEnrollYear.setYear(obj.getEnrollYear());
 		getComboBoxClass().setSelectedItem(obj.getMyClass());
 	}
 

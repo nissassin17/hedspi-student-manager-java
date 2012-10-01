@@ -1,5 +1,11 @@
 package org.hedspi.posgresql.hedspi_student_manager.view.contact;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
@@ -7,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import org.hedspi.posgresql.hedspi_student_manager.model.Model;
@@ -21,10 +28,8 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
 
 public class ContactPane extends JPanel {
 	/**
@@ -34,12 +39,12 @@ public class ContactPane extends JPanel {
 	private JTextField textFieldHome;
 	private JTextField textFieldLast;
 	private JTextField textFieldFirst;
-	private JTextField textFieldBrithday;
+	private JDateChooser textFieldBrithday;
 	private DefaultComboBoxModel<City> citiesModel;
 	private DefaultComboBoxModel<District> districtModel;
-	private ListEditor listPhone;
-	private ListEditor listEmail;
-	private ListEditor listEditorImage;
+	private ListEditor<String> listPhone;
+	private ListEditor<String> listEmail;
+	private ListEditor<String> listEditorImage;
 	private JEditorPane editorPanelNote;
 	private JComboBox<City> comboBox_1;
 	private JComboBox<District> comboBox;
@@ -106,9 +111,7 @@ public class ContactPane extends JPanel {
 		textFieldFirst = new JTextField();
 		textFieldFirst.setColumns(10);
 		
-		textFieldBrithday = new JTextField();
-		textFieldBrithday.setEditable(false);
-		textFieldBrithday.setColumns(10);
+		textFieldBrithday = new JDateChooser();
 		
 		citiesModel = new DefaultComboBoxModel<>();
 		comboBox_1 = new JComboBox<>(citiesModel);
@@ -123,7 +126,7 @@ public class ContactPane extends JPanel {
 		setCities((HedspiObjects<City>)Model.getInstance().getData("getCitiesList"));
 		setDefaultDistrict();
 		
-		listPhone = new ListEditor();
+		listPhone = new ListEditor<String>();
 		setLayout(new FormLayout(new ColumnSpec[] {
 				ColumnSpec.decode("max(5dlu;default)"),
 				FormFactory.RELATED_GAP_COLSPEC,
@@ -142,7 +145,7 @@ public class ContactPane extends JPanel {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("23px"),
 				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("20px"),
+				RowSpec.decode("21px"),
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("14px"),
 				FormFactory.RELATED_GAP_ROWSPEC,
@@ -181,24 +184,26 @@ public class ContactPane extends JPanel {
 		JLabel lblEmails = new JLabel("Emails");
 		add(lblEmails, "3, 21");
 		
-		listEmail = new ListEditor();
+		listEmail = new ListEditor<>();
 		add(listEmail, "4, 21, fill, fill");
 		
 		JLabel lblImageUrls = DefaultComponentFactory.getInstance().createLabel("Image urls");
 		add(lblImageUrls, "3, 22");
 		
-		listEditorImage = new ListEditor();
+		listEditorImage = new ListEditor<>();
 		add(listEditorImage, "4, 22, fill, fill");
 		
 		JLabel lblNotes = new JLabel("Notes");
 		add(lblNotes, "3, 23");
 		
 		editorPanelNote = new JEditorPane();
+		editorPanelNote.setBorder(new LineBorder(new Color(0, 0, 0)));
 		add(editorPanelNote, "4, 23, fill, fill");
 
 	}
 
 	public void setContact(Contact contact) {
+		getTextFieldBrithday().setDate(contact.getDob());
 		textFieldFirst.setText(contact.getFirstName());
 		textFieldLast.setText(contact.getLastName());
 		textFieldHome.setText(contact.getAddress().getHome());
@@ -212,6 +217,7 @@ public class ContactPane extends JPanel {
 			getComboBox().setSelectedItem(dt);
 		else
 			setDefaultDistrict();
+		
 		getToggleButtonSex().setSelected(!contact.isMan());
 	}
 	private void setDefaultDistrict() {
@@ -227,25 +233,28 @@ public class ContactPane extends JPanel {
 		
 	}
 
-	protected ListEditor getListPhone() {
+	protected ListEditor<String> getListPhone() {
 		return listPhone;
 	}
-	protected ListEditor getListEmail() {
+	protected ListEditor<String> getListEmail() {
 		return listEmail;
 	}
-	protected ListEditor getListEditorImage() {
+	protected ListEditor<String> getListEditorImage() {
 		return listEditorImage;
 	}
 	protected JEditorPane getEditorPanelNote() {
 		return editorPanelNote;
 	}
-	protected JComboBox getComboBox_1() {
+	protected JComboBox<City> getComboBox_1() {
 		return comboBox_1;
 	}
-	protected JComboBox getComboBox() {
+	protected JComboBox<District> getComboBox() {
 		return comboBox;
 	}
 	protected JToggleButton getToggleButtonSex() {
 		return toggleButtonSex;
+	}
+	protected JDateChooser getTextFieldBrithday() {
+		return textFieldBrithday;
 	}
 }

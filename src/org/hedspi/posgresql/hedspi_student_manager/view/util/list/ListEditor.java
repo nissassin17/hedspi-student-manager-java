@@ -23,22 +23,33 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.RowSpec;
 
-public class ListEditor extends JPanel {
+public class ListEditor<T extends Object> extends JPanel {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTextField textField;
-	private DefaultListModel<String> listModel;
-	private JList<String> list;
+	private DefaultListModel<T> listModel;
+	private JList<T> list;
+	private IElementGetter<T> elementGetter;
+
+	public ListEditor(IElementGetter<T> elementGetter) {
+		this();
+		this.elementGetter = elementGetter;
+	}
 
 	/**
 	 * Create the panel.
 	 */
 	public ListEditor() {
-		setLayout(new MigLayout("",
-				"[82.00px:201.00px:669.00px,grow][49.00:43.00:423.00]",
-				"[:24.00px:33.00px][241.00,grow]"));
+		elementGetter = new IElementGetter<T>() {
+
+			@Override
+			public T getElement(String val) {
+				return (T)val;
+			}
+		};
+		setLayout(new MigLayout("", "[82.00px:211.00px:100.00%,grow][49.00:52.00:423.00]", "[:24.00px:33.00px][241.00,grow]"));
 
 		textField = new JTextField();
 		textField.addFocusListener(new FocusAdapter() {
@@ -63,7 +74,7 @@ public class ListEditor extends JPanel {
 				String val = textField.getText();
 				if (val.equals(""))
 					return;
-				listModel.addElement(val);
+				listModel.addElement(elementGetter.getElement(val));
 				textField.setText("");
 			}
 		});
@@ -97,7 +108,7 @@ public class ListEditor extends JPanel {
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int[] selected = list.getSelectedIndices();
-				ArrayList<String> arr = new ArrayList<>();
+				ArrayList<T> arr = new ArrayList<>();
 				boolean[] mark = new boolean[listModel.getSize()];
 				for (int i = 0; i < listModel.getSize(); i++)
 					mark[i] = false;
@@ -107,7 +118,7 @@ public class ListEditor extends JPanel {
 					if (!mark[i])
 						arr.add(listModel.getElementAt(i));
 				listModel.removeAllElements();
-				for (String it : arr)
+				for (T it : arr)
 					listModel.addElement(it);
 			}
 		});
@@ -116,9 +127,9 @@ public class ListEditor extends JPanel {
 
 	}
 
-	public void setValues(ArrayList<String> values) {
+	public void setValues(ArrayList<T> values) {
 		listModel.clear();
-		for(String it : values)
+		for(T it : values)
 			listModel.addElement(it);
 	}
 
