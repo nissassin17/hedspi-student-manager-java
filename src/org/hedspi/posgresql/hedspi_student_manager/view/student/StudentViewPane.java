@@ -79,5 +79,10 @@ public class StudentViewPane extends JPanel implements IObjectViewPanel<Student>
 		studentOtherInfoPanel.setStudent(obj);
 		panel.setContact(obj.getContact());
 	}
+	
+//	public Student cloneStudent(){
+//		Student student = new Student(id, contact, enrollPoint, enrollYear, myClass);
+//		return student;
+//	}
 
 }

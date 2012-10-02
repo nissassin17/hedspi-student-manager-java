@@ -16,7 +16,9 @@ public class ClassService {
 		String query = "select \"CL#\", \"Name\" from \"Class\"";
 		ArrayList<HashMap<String, Object>> rs = CoreService.getInstance().query(query);
 		for(HashMap<String, Object> it : rs){
-			HedspiClass cl = new HedspiClass((String)it.get("CL#"), (String)it.get("Name"));
+			int cl1 = (int)it.get("CL#");
+			String cla = String.valueOf(cl1);
+			HedspiClass cl = new HedspiClass(cla, (String)it.get("Name"));
 			classes.put(cl);
 		}
 		return classes;

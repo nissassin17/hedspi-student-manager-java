@@ -1,0 +1,27 @@
+Oct 02, 2012 1:12:23 PM org.hedspi.posgresql.hedspi_student_manager.control.Control start
+INFO: System starts
+Oct 02, 2012 1:12:23 PM org.hedspi.posgresql.hedspi_student_manager.control.Control start
+INFO: Open login window
+Oct 02, 2012 1:12:25 PM org.hedspi.posgresql.hedspi_student_manager.control.Control tryLogin
+INFO: Try login
+Oct 02, 2012 1:12:25 PM org.hedspi.posgresql.hedspi_student_manager.control.Control tryLogin
+INFO: Login success
+Oct 02, 2012 1:12:25 PM org.hedspi.posgresql.hedspi_student_manager.service.AddressService getAddresses
+INFO: Fetch list of cities from database
+Oct 02, 2012 1:12:25 PM org.hedspi.posgresql.hedspi_student_manager.service.AddressService getAddresses
+INFO: Fetch list of cities
+Oct 02, 2012 1:12:25 PM org.hedspi.posgresql.hedspi_student_manager.service.CoreService query
+INFO: Execute query SELECT "CY#", "Name" FROM "City" order by "Name"
+Oct 02, 2012 1:12:25 PM org.hedspi.posgresql.hedspi_student_manager.service.AddressService getAddresses
+INFO: Fetch list of districts
+Oct 02, 2012 1:12:25 PM org.hedspi.posgresql.hedspi_student_manager.service.CoreService query
+INFO: Execute query SELECT "DT#", "Name" FROM "District" order by "Name"
+Oct 02, 2012 1:12:26 PM org.hedspi.posgresql.hedspi_student_manager.service.AddressService getAddresses
+INFO: Connect districts and cities
+Oct 02, 2012 1:12:26 PM org.hedspi.posgresql.hedspi_student_manager.service.CoreService query
+INFO: Execute query select "HasDistrict"."DT#", "HasDistrict"."CY#" 
+from "City", "District", "HasDistrict" 
+where 
+"City"."CY#" = "HasDistrict"."CY#" AND 
+"District"."DT#" = "HasDistrict"."DT#" 
+order by "District"."Name"

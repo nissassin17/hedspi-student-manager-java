@@ -12,7 +12,6 @@ import com.jgoodies.forms.factories.FormFactory;
 import javax.swing.JLabel;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
@@ -24,7 +23,6 @@ public class ClassViewPanel extends JPanel implements IObjectViewPanel<HedspiCla
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTextField textFieldClassName;
-	private DefaultListModel<Student> modelClass;
 	private JList<Student> listClass;
 
 	/**
@@ -70,8 +68,7 @@ public class ClassViewPanel extends JPanel implements IObjectViewPanel<HedspiCla
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "2, 6, fill, fill");
 		
-		modelClass = new DefaultListModel<>();
-		listClass = new JList<Student>(modelClass);
+		listClass = new JList<Student>();
 		scrollPane.setViewportView(listClass);
 
 	}
@@ -79,10 +76,7 @@ public class ClassViewPanel extends JPanel implements IObjectViewPanel<HedspiCla
 	@Override
 	public void setObject(HedspiClass obj) {
 		getTextFieldClassName().setText(obj.getName());
-		
-		modelClass.removeAllElements();
-		for(Student it : obj.getStudents().getSortedListIgnoreCase())
-			modelClass.addElement(it);
+		listClass.setModel(obj.getStudents().getListModel());
 	}
 
 	protected JList<Student> getListClass() {

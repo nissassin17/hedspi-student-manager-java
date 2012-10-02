@@ -1,12 +1,11 @@
 package org.hedspi.posgresql.hedspi_student_manager.model.contact;
 
+import java.util.ArrayList;
 import java.util.Date;
 
-import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.Address;
+import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.District;
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObject;
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
-import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.NewLineListManipulator;
-import org.hedspi.posgresql.hedspi_student_manager.service.ContactService;
 
 public class Contact extends HedspiObject {
 	
@@ -38,11 +37,11 @@ public class Contact extends HedspiObject {
 		this.lastName = lastName;
 	}
 
-	public NewLineListManipulator getEmail() {
+	public ArrayList<String> getEmail() {
 		return email;
 	}
 
-	public void setEmail(NewLineListManipulator email) {
+	public void setEmail(ArrayList<String> email) {
 		this.email = email;
 	}
 
@@ -54,19 +53,19 @@ public class Contact extends HedspiObject {
 		this.note = note;
 	}
 
-	public NewLineListManipulator getImage() {
+	public ArrayList<String> getImage() {
 		return image;
 	}
 
-	public void setImage(NewLineListManipulator image) {
+	public void setImage(ArrayList<String> image) {
 		this.image = image;
 	}
 
-	public NewLineListManipulator getPhone() {
+	public ArrayList<String> getPhone() {
 		return phone;
 	}
 
-	public void setPhone(NewLineListManipulator phone) {
+	public void setPhone(ArrayList<String> phone) {
 		this.phone = phone;
 	}
 
@@ -82,24 +81,55 @@ public class Contact extends HedspiObject {
 		return getFirstName() + " " + getLastName();
 	}
 	
-	private String firstName; 
-	private String lastName;
-	private NewLineListManipulator email;
-	private Address address;
-	public Address getAddress() {
-		return address;
-	}
-
-	public void setAddress(Address address) {
-		this.address = address;
+	public Contact(String id, String note, ArrayList<String> image,
+			ArrayList<String> phone, Date dob, boolean isMan,
+			String firstName, String lastName, ArrayList<String> email,
+			String home, District district) {
+		super(id);
+		this.note = note;
+		this.image = image;
+		this.phone = phone;
+		this.dob = dob;
+		this.isMan = isMan;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.home = home;
+		this.district = district;
 	}
 
 	private String note;
-	private NewLineListManipulator image;
-	private NewLineListManipulator phone;
+	private ArrayList<String> image;
+	private ArrayList<String> phone;
 	private Date dob;
-	private static HedspiObjects<Contact> contacts;
 	private boolean isMan;//true if is man
+	private String firstName; 
+	private String lastName;
+	private ArrayList<String> email;
+	private String home;
+	private District district;
+
+	public String getHome() {
+		return home;
+	}
+
+	public void setHome(String home) {
+		this.home = home;
+	}
+
+	public District getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(District district) {
+		this.district = district;
+	}
+	
+	private static HedspiObjects<Contact> contacts;
+
+	public static void setContacts(HedspiObjects<Contact> contacts) {
+		Contact.contacts = contacts;
+	}
 
 	public boolean isMan() {
 		return isMan;
@@ -110,8 +140,6 @@ public class Contact extends HedspiObject {
 	}
 
 	public static HedspiObjects<Contact> getContacts() {
-		if (contacts == null)
-			contacts = ContactService.getContacts();
 		return contacts;
 	}
 

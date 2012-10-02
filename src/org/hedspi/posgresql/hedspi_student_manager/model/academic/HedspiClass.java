@@ -4,7 +4,6 @@ import org.hedspi.posgresql.hedspi_student_manager.model.contact.Lecturer;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.Student;
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObject;
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
-import org.hedspi.posgresql.hedspi_student_manager.service.ClassService;
 
 public class HedspiClass extends HedspiObject {
 	
@@ -12,9 +11,11 @@ public class HedspiClass extends HedspiObject {
 	public static final String NAME_CODE = "Name";
 	private static HedspiObjects<HedspiClass> classes;
 	
+	public static void setClasses(HedspiObjects<HedspiClass> classes) {
+		HedspiClass.classes = classes;
+	}
+
 	public static HedspiObjects<HedspiClass> getClasses() {
-		if (classes == null)
-			classes = ClassService.getClasses();
 		return classes;
 	}
 

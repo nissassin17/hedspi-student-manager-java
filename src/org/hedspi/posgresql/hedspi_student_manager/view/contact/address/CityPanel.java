@@ -33,7 +33,7 @@ public class CityPanel extends JPanel implements IObjectViewPanel<City> {
 	public void setCity(City city) {
 		this.city = city;
 		textField_1.setText(city.getName());
-		getPanel_3().setValues(city.getDistricts().getSortedListIgnoreCase());
+		getPanel_3().setValues(city.getDistricts().values());
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class CityPanel extends JPanel implements IObjectViewPanel<City> {
 			@Override
 			public District getElement(String val) {
 				//TODO: unimplemented get new district
-				return new District("Unimplemented", val);
+				return new District("Unimplemented", val, getCity());
 			}});
 		add(panel, "2, 6, fill, fill");
 	}

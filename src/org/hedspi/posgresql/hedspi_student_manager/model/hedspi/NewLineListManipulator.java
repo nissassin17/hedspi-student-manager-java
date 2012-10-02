@@ -1,5 +1,7 @@
 package org.hedspi.posgresql.hedspi_student_manager.model.hedspi;
 
+import java.util.ArrayList;
+
 
 public class NewLineListManipulator extends java.util.ArrayList<String> {
 
@@ -13,6 +15,10 @@ public class NewLineListManipulator extends java.util.ArrayList<String> {
 		parse(endlInput);
 	}
 	
+	public NewLineListManipulator(ArrayList<String> email) {
+		super(email);
+	}
+
 	public void parse(String endlInput){
 		super.clear();
 		String[] vals = endlInput.split("\n");
