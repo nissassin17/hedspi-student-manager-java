@@ -10,7 +10,6 @@ import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
@@ -19,7 +18,9 @@ import org.hedspi.posgresql.hedspi_student_manager.model.contact.Contact;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.City;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.District;
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.SortedHedspiObjectsComboModel;
-import org.hedspi.posgresql.hedspi_student_manager.view.util.list.ListEditor;
+import org.hedspi.posgresql.hedspi_student_manager.view.util.AssociatedTextField;
+import org.hedspi.posgresql.hedspi_student_manager.view.util.ITextFieldUpdater;
+import org.hedspi.posgresql.hedspi_student_manager.view.util.list.DefaultListEditor;
 
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.jgoodies.forms.factories.FormFactory;
@@ -33,14 +34,43 @@ public class ContactPane extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTextField textFieldHome;
-	private JTextField textFieldLast;
-	private JTextField textFieldFirst;
+	private AssociatedTextField<Contact> textFieldHome;
+	private AssociatedTextField<Contact> textFieldLast;
+	private AssociatedTextField<Contact> textFieldFirst;
 	private JDateChooser textFieldBrithday;
 	private SortedHedspiObjectsComboModel<District> districtModel;
-	private ListEditor<String> listPhone;
-	private ListEditor<String> listEmail;
-	private ListEditor<String> listEditorImage;
+	private DefaultListEditor listPhone;
+	public DefaultListEditor getListPhone() {
+		return listPhone;
+	}
+
+
+	public void setListPhone(DefaultListEditor listPhone) {
+		this.listPhone = listPhone;
+	}
+
+
+	public DefaultListEditor getListEmail() {
+		return listEmail;
+	}
+
+
+	public void setListEmail(DefaultListEditor listEmail) {
+		this.listEmail = listEmail;
+	}
+
+
+	public DefaultListEditor getListImage() {
+		return listImage;
+	}
+
+
+	public void setListImage(DefaultListEditor listImage) {
+		this.listImage = listImage;
+	}
+
+	private DefaultListEditor listEmail;
+	private DefaultListEditor listImage;
 	private JEditorPane editorPanelNote;
 	private JComboBox<City> comboBoxCity;
 	private JComboBox<District> comboBoxDistrict;
@@ -48,7 +78,7 @@ public class ContactPane extends JPanel {
 
 	private void setCity(City currentCity) {
 		getComboBox_1().setSelectedItem(currentCity);
-		comboBoxDistrict.setModel(currentCity.getDistricts().getComboBoxModel());
+		getComboBox().setModel(currentCity.getDistricts().getComboBoxModel());
 	}
 
 
@@ -90,13 +120,47 @@ public class ContactPane extends JPanel {
 			}
 		});
 		
-		textFieldHome = new JTextField();
+		textFieldHome = new AssociatedTextField<>(new ITextFieldUpdater<Contact>() {
+
+			@Override
+			public void setText(Contact obj, String text) {
+				obj.setHome(text);
+			}
+
+			@Override
+			public String getText(Contact obj) {
+				return obj.getHome();
+			}
+		});
 		textFieldHome.setColumns(10);
 		
-		textFieldLast = new JTextField();
+		textFieldLast = new AssociatedTextField<>(new ITextFieldUpdater<Contact>() {
+
+			@Override
+			public void setText(Contact obj, String text) {
+				obj.setLastName(text);
+			}
+
+			@Override
+			public String getText(Contact obj) {
+				return obj.getLastName();
+			}
+		});
 		textFieldLast.setColumns(10);
 		
-		textFieldFirst = new JTextField();
+		textFieldFirst = new AssociatedTextField<Contact>(new ITextFieldUpdater<Contact>() {
+
+			@Override
+			public void setText(Contact obj, String text) {
+				obj.setFirstName(text);
+				
+			}
+
+			@Override
+			public String getText(Contact obj) {
+				return obj.getFirstName();
+			}
+		});
 		textFieldFirst.setColumns(10);
 		
 		textFieldBrithday = new JDateChooser();
@@ -111,7 +175,7 @@ public class ContactPane extends JPanel {
 
 		});
 		
-		listPhone = new ListEditor<String>();
+		listPhone = new DefaultListEditor();
 		setLayout(new FormLayout(new ColumnSpec[] {
 				ColumnSpec.decode("max(5dlu;default)"),
 				FormFactory.RELATED_GAP_COLSPEC,
@@ -169,14 +233,14 @@ public class ContactPane extends JPanel {
 		JLabel lblEmails = new JLabel("Emails");
 		add(lblEmails, "3, 21");
 		
-		listEmail = new ListEditor<>();
+		listEmail = new DefaultListEditor();
 		add(listEmail, "4, 21, fill, fill");
 		
 		JLabel lblImageUrls = DefaultComponentFactory.getInstance().createLabel("Image urls");
 		add(lblImageUrls, "3, 22");
 		
-		listEditorImage = new ListEditor<>();
-		add(listEditorImage, "4, 22, fill, fill");
+		listImage = new DefaultListEditor();
+		add(listImage, "4, 22, fill, fill");
 		
 		JLabel lblNotes = new JLabel("Notes");
 		add(lblNotes, "3, 23");
@@ -196,12 +260,12 @@ public class ContactPane extends JPanel {
 	public void setContact(Contact contact) {
 		this.contact = contact;
 		getTextFieldBrithday().setDate(contact.getDob());
-		textFieldFirst.setText(contact.getFirstName());
-		textFieldLast.setText(contact.getLastName());
-		textFieldHome.setText(contact.getHome());
-		getListPhone().setValues(contact.getPhone());
-		getListEmail().setValues(contact.getEmail());
-		getListEditorImage().setValues(contact.getImage());
+		textFieldFirst.setObject(contact);
+		textFieldLast.setObject(contact);
+		textFieldHome.setObject(contact);
+		getListPhone().setHedspiObject(contact.getPhone());
+		getListEmail().setHedspiObject(contact.getEmail());
+		getListImage().setHedspiObject(contact.getImage());
 		getEditorPanelNote().setText(contact.getNote());
 		setCity(contact.getDistrict().getCity());
 		District dt = contact.getDistrict();
@@ -211,15 +275,6 @@ public class ContactPane extends JPanel {
 		getToggleButtonSex().setSelected(!contact.isMan());
 	}
 
-	protected ListEditor<String> getListPhone() {
-		return listPhone;
-	}
-	protected ListEditor<String> getListEmail() {
-		return listEmail;
-	}
-	protected ListEditor<String> getListEditorImage() {
-		return listEditorImage;
-	}
 	protected JEditorPane getEditorPanelNote() {
 		return editorPanelNote;
 	}

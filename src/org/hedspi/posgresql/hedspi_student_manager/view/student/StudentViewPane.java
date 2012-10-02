@@ -51,22 +51,10 @@ public class StudentViewPane extends JPanel implements IObjectViewPanel<Student>
 			new RowSpec[] {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("max(89dlu;default)"),
-				RowSpec.decode("max(0dlu;default):grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
 		studentOtherInfoPanel = new StudentOtherInfoPanel();
 		panel_1.add(studentOtherInfoPanel, "2, 2, fill, top");
-		
-		JPanel panel_2 = new JPanel();
-		panel_1.add(panel_2, "2, 3, fill, top");
-		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		JButton btnReset = new JButton("Reset");
-		panel_2.add(btnReset);
-		
-		JButton btnCommit = new JButton("Commit");
-		panel_2.add(btnCommit);
 
 	}
 

@@ -1,7 +1,6 @@
 package org.hedspi.posgresql.hedspi_student_manager.view.util.list;
 
 import java.awt.FlowLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -17,17 +16,22 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 import javax.swing.JScrollPane;
 
-public class ObjectListPanel<T extends Object> extends JPanel {
+import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObject;
+import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
+
+public class ObjectListPanel<T extends HedspiObject> extends JPanel {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private IObjectViewPanel<T> viewPanel;
+	private HedspiObjects<T> hedspiObject;
 
 	/**
 	 * Create the panel.
 	 */
-	public ObjectListPanel(IObjectViewPanel<T> viewPanelArg, DefaultListModel<T> model) {
+	public ObjectListPanel(IObjectViewPanel<T> viewPanelArg, HedspiObjects<T> hedspiObjectArg) {
+		this.hedspiObject = hedspiObjectArg;
 		this.viewPanel = viewPanelArg;
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
@@ -47,7 +51,7 @@ public class ObjectListPanel<T extends Object> extends JPanel {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "2, 6, fill, fill");
-		JList<T> list_1 = new JList<>(model);
+		JList<T> list_1 = new JList<T>(hedspiObject.getListModel());
 		scrollPane.setViewportView(list_1);
 		list_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list_1.addListSelectionListener(new ListSelectionListener() {
@@ -60,7 +64,7 @@ public class ObjectListPanel<T extends Object> extends JPanel {
 			}
 		});
 		
-		SortBox<T> panel_1 = new SortBox<>(model);
+		SortBox<T> panel_1 = new SortBox<>(hedspiObject.getListModel());
 		add(panel_1, "2, 2, fill, top");
 		
 		JPanel panel = new JPanel();

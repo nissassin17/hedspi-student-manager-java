@@ -18,7 +18,10 @@ public class ClassService {
 		for(HashMap<String, Object> it : rs){
 			int cl1 = (int)it.get("CL#");
 			String cla = String.valueOf(cl1);
-			HedspiClass cl = new HedspiClass(cla, (String)it.get("Name"));
+			String name = (String)it.get("Name");
+			if (name == null)
+				name = "";
+			HedspiClass cl = new HedspiClass(cla, name);
 			classes.put(cl);
 		}
 		return classes;

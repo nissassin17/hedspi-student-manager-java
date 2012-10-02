@@ -52,9 +52,9 @@ public class HedspiObjects<T extends HedspiObject> extends HashMap<String, T> {
 				it.addObject(arg1);
 		return val;
 	}
-	@Override
-	public T remove(Object arg0) {
-		T obj = super.remove(arg0);
+	
+	public T removeObject(T arg0) {
+		T obj = super.remove(arg0.getId());
 		if (obj != null)
 			for(IObjectsContainer<T> it : objectsContainersList)
 				it.removeObject(obj);

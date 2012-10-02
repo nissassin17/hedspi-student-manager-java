@@ -2,7 +2,6 @@ package org.hedspi.posgresql.hedspi_student_manager.view.util.list;
 
 import java.awt.Component;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -12,11 +11,12 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import org.eclipse.wb.swing.FocusTraversalOnArray;
+import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObject;
+import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import com.jgoodies.forms.layout.FormLayout;
@@ -24,32 +24,37 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.RowSpec;
 
-public class ListEditor<T extends Object> extends JPanel {
+public abstract class ListEditor<T extends HedspiObject> extends JPanel {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTextField textField;
-	private DefaultListModel<T> listModel;
 	private JList<T> list;
-	private IElementGetter<T> elementGetter;
+	private HedspiObjects<T> hedspiObject;
+	
+	public HedspiObjects<T> getHedspiObject() {
+		return hedspiObject;
+	}
 
-	public ListEditor(IElementGetter<T> elementGetter) {
-		this();
-		this.elementGetter = elementGetter;
+	public void setHedspiObject(HedspiObjects<T> hedspiObject) {
+		this.hedspiObject = hedspiObject;
+		list.setModel(hedspiObject.getListModel());
+	}
+
+	public abstract T getNewElement(String val);
+	
+	public ListEditor(){
+		this(new HedspiObjects<T>());
 	}
 
 	/**
 	 * Create the panel.
 	 */
-	public ListEditor() {
-		elementGetter = new IElementGetter<T>() {
-
-			@Override
-			public T getElement(String val) {
-				return (T)val;
-			}
-		};
+	public ListEditor(HedspiObjects<T> hedspiObjectArg) {
+		super();
+		this.hedspiObject = hedspiObjectArg;
+		
 		setLayout(new MigLayout("", "[82.00px:211.00px:100.00%,grow][49.00:52.00:423.00]", "[:24.00px:33.00px][241.00,grow]"));
 
 		textField = new JTextField();
@@ -71,11 +76,11 @@ public class ListEditor<T extends Object> extends JPanel {
 
 		JButton btnAdd = new JButton("+");
 		btnAdd.addActionListener(new ActionListener() {
+			
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String val = textField.getText();
-				if (val.equals(""))
-					return;
-				listModel.addElement(elementGetter.getElement(val));
+				hedspiObject.put(getNewElement(val));
 				textField.setText("");
 			}
 		});
@@ -84,8 +89,7 @@ public class ListEditor<T extends Object> extends JPanel {
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "cell 0 1,grow");
 
-		listModel = new DefaultListModel<>();
-		list = new JList<>(listModel);
+		list = new JList<>(this.hedspiObject.getListModel());
 		scrollPane.setViewportView(list);
 
 		JPanel panel = new JPanel();
@@ -108,37 +112,13 @@ public class ListEditor<T extends Object> extends JPanel {
 		panel.add(btnRemove, "1, 4, fill, top");
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int[] selected = list.getSelectedIndices();
-				ArrayList<T> arr = new ArrayList<>();
-				boolean[] mark = new boolean[listModel.getSize()];
-				for (int i = 0; i < listModel.getSize(); i++)
-					mark[i] = false;
-				for (int i = 0; i < selected.length; i++)
-					mark[selected[i]] = true;
-				for (int i = 0; i < listModel.getSize(); i++)
-					if (!mark[i])
-						arr.add(listModel.getElementAt(i));
-				listModel.removeAllElements();
-				for (T it : arr)
-					listModel.addElement(it);
+				ArrayList<T> arr = (ArrayList<T>) list.getSelectedValuesList();
+				for(T it : arr)
+					hedspiObject.removeObject(it);
 			}
 		});
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[] {
 				textField, btnAdd, btnRemove, scrollPane }));
 
 	}
-
-	public void setValues(Collection<T> collection) {
-		listModel.clear();
-		for(T it : collection)
-			listModel.addElement(it);
-	}
-	
-	public ArrayList<T> getValues(){
-		ArrayList<T> val = new ArrayList<>();
-		for(int i = 0; i < listModel.getSize(); i ++)
-			val.add(listModel.get(i));
-		return val;
-	}
-
 }

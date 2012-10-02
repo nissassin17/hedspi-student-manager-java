@@ -7,7 +7,7 @@ import javax.swing.JTextField;
 
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.City;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.District;
-import org.hedspi.posgresql.hedspi_student_manager.view.util.list.IElementGetter;
+import org.hedspi.posgresql.hedspi_student_manager.view.util.list.DistrictListEditor;
 import org.hedspi.posgresql.hedspi_student_manager.view.util.list.IObjectViewPanel;
 import org.hedspi.posgresql.hedspi_student_manager.view.util.list.ListEditor;
 
@@ -33,7 +33,7 @@ public class CityPanel extends JPanel implements IObjectViewPanel<City> {
 	public void setCity(City city) {
 		this.city = city;
 		textField_1.setText(city.getName());
-		getPanel_3().setValues(city.getDistricts().values());
+		getPanel_3().setHedspiObject(city.getDistricts());
 	}
 
 	/**
@@ -76,13 +76,7 @@ public class CityPanel extends JPanel implements IObjectViewPanel<City> {
 		JLabel lblDistrictList = DefaultComponentFactory.getInstance().createLabel("Districts list");
 		add(lblDistrictList, "2, 4, left, top");
 		
-		panel = new ListEditor<>(new IElementGetter<District>(){
-
-			@Override
-			public District getElement(String val) {
-				//TODO: unimplemented get new district
-				return new District("Unimplemented", val, getCity());
-			}});
+		panel = new DistrictListEditor();
 		add(panel, "2, 6, fill, fill");
 	}
 

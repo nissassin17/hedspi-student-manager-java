@@ -3,11 +3,12 @@ package org.hedspi.posgresql.hedspi_student_manager.view.student;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import org.hedspi.posgresql.hedspi_student_manager.model.academic.HedspiClass;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.Student;
+import org.hedspi.posgresql.hedspi_student_manager.view.util.AssociatedTextField;
+import org.hedspi.posgresql.hedspi_student_manager.view.util.ITextFieldUpdater;
 
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.jgoodies.forms.factories.FormFactory;
@@ -21,8 +22,8 @@ public class StudentOtherInfoPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JTextField textFieldEnrollPoint;
-	private JTextField textFieldID;
+	private AssociatedTextField<Student> textFieldEnrollPoint;
+	private AssociatedTextField<Student> textFieldID;
 	private JYearChooser spinnerEnrollYear;
 	private JComboBox<HedspiClass> comboBoxClass;
 
@@ -52,7 +53,18 @@ public class StudentOtherInfoPanel extends JPanel {
 		lblStudentIdentity.setDisplayedMnemonic('i');
 		add(lblStudentIdentity, "2, 2, right, default");
 		
-		textFieldID = new JTextField();
+		textFieldID = new AssociatedTextField<Student>(new ITextFieldUpdater<Student>() {
+			
+			@Override
+			public void setText(Student obj, String text) {
+				obj.setMssv(text);
+			}
+
+			@Override
+			public String getText(Student obj) {
+				return obj.getMssv();
+			}
+		});
 		add(textFieldID, "4, 2, fill, default");
 		textFieldID.setColumns(10);
 		
@@ -66,7 +78,24 @@ public class StudentOtherInfoPanel extends JPanel {
 		JLabel lblEntrollPoint = DefaultComponentFactory.getInstance().createLabel("Entroll point*");
 		add(lblEntrollPoint, "2, 6, right, default");
 		
-		textFieldEnrollPoint = new JTextField();
+		textFieldEnrollPoint = new AssociatedTextField<Student>(new ITextFieldUpdater<Student>() {
+
+			@Override
+			public void setText(Student obj, String text) {
+				double val;
+				try{
+					val = Double.parseDouble(text);
+					obj.setEnrollPoint(val);
+				} catch (Exception e){
+
+				}
+			}
+
+			@Override
+			public String getText(Student obj) {
+				return String.valueOf(obj.getEnrollPoint());
+			}
+		});
 		add(textFieldEnrollPoint, "4, 6, fill, default");
 		textFieldEnrollPoint.setColumns(10);
 		
@@ -79,10 +108,12 @@ public class StudentOtherInfoPanel extends JPanel {
 	}
 
 	public void setStudent(Student obj) {
-		textFieldID.setText(obj.getId());
+		textFieldID.setText(obj.getMssv());
 		textFieldEnrollPoint.setText(String.valueOf(obj.getEnrollPoint()));
 		spinnerEnrollYear.setYear(obj.getEnrollYear());
 		getComboBoxClass().setSelectedItem(obj.getMyClass());
+		textFieldID.setObject(obj);
+		textFieldEnrollPoint.setObject(obj);
 	}
 
 	protected JComboBox<HedspiClass> getComboBoxClass() {

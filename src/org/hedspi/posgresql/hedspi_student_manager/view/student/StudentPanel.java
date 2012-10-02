@@ -23,7 +23,7 @@ public class StudentPanel extends JSplitPane {
 		JScrollPane scrollPane = new JScrollPane();
 		setLeftComponent(scrollPane);
 		
-		ObjectListPanel<Student> panel = new ObjectListPanel<Student>(panel_1, Student.getStudents().getListModel());
+		ObjectListPanel<Student> panel = new ObjectListPanel<Student>(panel_1, Student.getStudents());
 		scrollPane.setViewportView(panel);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();

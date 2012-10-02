@@ -61,6 +61,9 @@ public class AllFunction extends JFrame implements IView {
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
+		
+		JMenu mnOperation = new JMenu("Operation");
+		menuBar.add(mnOperation);
 
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
