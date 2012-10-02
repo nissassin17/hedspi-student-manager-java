@@ -9,7 +9,7 @@ import org.hedspi.posgresql.hedspi_student_manager.control.Control;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.Contact;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.District;
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
-import org.hedspi.posgresql.hedspi_student_manager.model.util.NewLineUtil;
+import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.NewLineListManipulator;
 
 public class ContactService {
 
@@ -22,14 +22,35 @@ public class ContactService {
 		ArrayList<HashMap<String, Object>> rs = CoreService.getInstance().query(query);
 		for(HashMap<String, Object> it : rs){
 			String first = (String)it.get("FirstName");
+			if (first == null)
+				first = "";
 			String last = (String)it.get("LastName");
+			if (last == null)
+				last = "";
+			
 			boolean sex = (boolean)it.get("Sex");
 			Date dob = (Date)it.get("DOB");
-			ArrayList<String> emails = NewLineUtil.parse((String)it.get("Email"));
-			ArrayList<String> phones = NewLineUtil.parse((String)it.get("Phone"));
-			ArrayList<String> images = NewLineUtil.parse((String)it.get("Phone"));
+			
+			String strEmail = (String)it.get("Email");
+			if (strEmail == null)
+				strEmail = "";
+			NewLineListManipulator emails = new NewLineListManipulator(strEmail);
+			String strphone = (String)it.get("Phone");
+			if (strphone == null)
+				strphone = "";
+			NewLineListManipulator phones = new NewLineListManipulator(strphone);
+			String strImage = (String)it.get("Image");
+			if (strImage == null)
+				strImage = "";
+			NewLineListManipulator images = new NewLineListManipulator(strImage);
 			String note = (String)it.get("Notes");
+			if (note == null)
+				note = "";
+			
 			String home = (String)it.get("Home");
+			if (home == null)
+				home = "";
+			
 			int id = (int)it.get("CT#");
 			String ct = String.valueOf(id);
 			int dtid = (int)it.get("DT#");

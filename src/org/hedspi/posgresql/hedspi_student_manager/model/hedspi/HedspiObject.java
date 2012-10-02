@@ -41,18 +41,10 @@ public class HedspiObject implements Comparable<Object> {
 		this.id = id;
 	}
 	
-//	public boolean equals(Object obj){
-//		return this.hashCode() == obj.hashCode();
-//	}
-//	
-//	public int hashCode(){
-//		return id.hashCode();
-//	}
-//	
 	public String toString(){
 		return id;
 	}
-
+	
 	@Override
 	public int compareTo(Object arg0) {
 		return this.toString().compareTo(arg0.toString());

@@ -1,20 +1,18 @@
 package org.hedspi.posgresql.hedspi_student_manager.model.hedspi;
 
-import java.util.PriorityQueue;
-
 import javax.swing.DefaultListModel;
 
-public class SortedHedspiObjectsListModel<T extends Comparable<Object>> extends DefaultListModel<T> implements IObjectsContainer<T>{
+public class SortedHedspiObjectsListModel<T extends HedspiObject> extends DefaultListModel<T> implements IObjectsContainer<T>{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private PriorityQueue<T> sortedList;
+	private SortedList<T> sortedList;
 	
 	public SortedHedspiObjectsListModel(){
-		sortedList = new PriorityQueue<>();
+		sortedList = new SortedList<>();
 	}
 
 	@Override

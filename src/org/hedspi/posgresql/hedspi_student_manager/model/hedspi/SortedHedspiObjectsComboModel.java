@@ -1,6 +1,5 @@
 package org.hedspi.posgresql.hedspi_student_manager.model.hedspi;
 
-import java.util.PriorityQueue;
 
 import javax.swing.DefaultComboBoxModel;
 
@@ -11,10 +10,10 @@ public class SortedHedspiObjectsComboModel<T extends Comparable<Object>> extends
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private PriorityQueue<T> sortedList;
+	private SortedList<T> sortedList;
 	
 	public SortedHedspiObjectsComboModel() {
-		sortedList = new PriorityQueue<>();
+		sortedList = new SortedList<>();
 	}
 
 	@Override

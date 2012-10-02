@@ -20,7 +20,10 @@ public class AddressService {
 		String query = "SELECT \"CY#\", \"Name\" FROM \"City\"";
 		ArrayList<HashMap<String, Object>> rs = CoreService.getInstance().query(query);
 		for(HashMap<String, Object> it : rs){
-			City city = new City(String.valueOf((int)it.get("CY#")), (String)it.get("Name"));
+			String name = (String)it.get("Name");
+			if (name ==null)
+				name = "";
+			City city = new City(String.valueOf((int)it.get("CY#")), name);
 			cities.put(city);
 		}
 		
@@ -32,7 +35,10 @@ public class AddressService {
 		for(HashMap<String, Object> it : rs){
 			int cy = (int)it.get("CY#");
 			City city = cities.get(String.valueOf(cy));
-			District district = new District(String.valueOf((int)it.get("DT#")), (String)it.get("Name"), city);
+			String name = (String)it.get("Name");
+			if (name == null)
+				name = "";
+			District district = new District(String.valueOf((int)it.get("DT#")), name, city);
 			city.getDistricts().put(district);
 			districts.put(district);
 		}

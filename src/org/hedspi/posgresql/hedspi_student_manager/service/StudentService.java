@@ -25,6 +25,8 @@ public class StudentService {
 			int ct = (int)it.get("CT#");
 			int cl = (int)it.get("CL#");
 			String mssv = (String)it.get("MSSV");
+			if (mssv == null)
+				mssv = "";
 			HedspiClass cla = HedspiClass.getClasses().get(String.valueOf(cl));
 			Student st = new Student(String.valueOf(ct),
 					Contact.getContacts().get(String.valueOf(ct)),
