@@ -118,6 +118,8 @@ public class Control implements IControl{
 			CoreService.getInstance().setLoginInfo(loginInfo);
 			//hide current login
 			view.fire("set-visible", false);
+			//clone database
+			Model.getInstance().setData("cloneDatabase");
 			//show function list
 			functionWindow = new AllFunction();
 			logger.log(Level.INFO, "Show main function window");

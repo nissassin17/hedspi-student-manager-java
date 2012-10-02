@@ -3,7 +3,6 @@ package org.hedspi.posgresql.hedspi_student_manager.model.contact;
 import org.hedspi.posgresql.hedspi_student_manager.model.academic.HedspiClass;
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObject;
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
-import org.hedspi.posgresql.hedspi_student_manager.service.StudentService;
 
 public class Student extends HedspiObject {
 	
@@ -44,23 +43,35 @@ public class Student extends HedspiObject {
 	}
 
 	public Student(String id, Contact contact, double enrollPoint,
-			int enrollYear, HedspiClass myClass) {
+			int enrollYear, HedspiClass myClass, String mssv) {
 		super(id);
 		this.contact = contact;
 		this.enrollPoint = enrollPoint;
 		this.enrollYear = enrollYear;
 		this.myClass = myClass;
+		Mssv = mssv;
 	}
 
 	private Contact contact;
 	private double enrollPoint;
 	private int enrollYear;
 	private HedspiClass myClass;
+	private String Mssv;
+	public String getMssv() {
+		return Mssv;
+	}
+
+	public void setMssv(String mssv) {
+		Mssv = mssv;
+	}
+
 	private static HedspiObjects<Student> students;
 
+	public static void setStudents(HedspiObjects<Student> students) {
+		Student.students = students;
+	}
+
 	public static HedspiObjects<Student> getStudents() {
-		if (students == null)
-			students = StudentService.getStudentList();
 		return students;
 	}
 

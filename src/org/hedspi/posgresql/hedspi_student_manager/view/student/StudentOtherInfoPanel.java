@@ -1,27 +1,20 @@
 package org.hedspi.posgresql.hedspi_student_manager.view.student;
 
-import java.util.ArrayList;
-
-import javax.swing.JPanel;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.factories.FormFactory;
-import javax.swing.JLabel;
-import com.jgoodies.forms.factories.DefaultComponentFactory;
-import com.toedter.calendar.JYearChooser;
-
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import org.hedspi.posgresql.hedspi_student_manager.model.Model;
 import org.hedspi.posgresql.hedspi_student_manager.model.academic.HedspiClass;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.Student;
-import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
 
-import javax.swing.JSpinner;
+import com.jgoodies.forms.factories.DefaultComponentFactory;
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.RowSpec;
+import com.toedter.calendar.JYearChooser;
 
 public class StudentOtherInfoPanel extends JPanel {
 	/**
@@ -32,7 +25,6 @@ public class StudentOtherInfoPanel extends JPanel {
 	private JTextField textFieldID;
 	private JYearChooser spinnerEnrollYear;
 	private JComboBox<HedspiClass> comboBoxClass;
-	private DefaultComboBoxModel<HedspiClass> classModel;
 
 	/**
 	 * Create the panel.
@@ -68,9 +60,7 @@ public class StudentOtherInfoPanel extends JPanel {
 		lblClass.setDisplayedMnemonic('c');
 		add(lblClass, "2, 4, right, default");
 		
-		classModel = new DefaultComboBoxModel<HedspiClass>();
-		comboBoxClass = new JComboBox<>(classModel);
-		setClasses(((HedspiObjects<HedspiClass>)Model.getInstance().getData("getClassList")).getSortedListIgnoreCase());
+		comboBoxClass = new JComboBox<>(HedspiClass.getClasses().getComboBoxModel());
 		add(comboBoxClass, "4, 4, fill, default");
 		
 		JLabel lblEntrollPoint = DefaultComponentFactory.getInstance().createLabel("Entroll point*");
@@ -86,12 +76,6 @@ public class StudentOtherInfoPanel extends JPanel {
 		spinnerEnrollYear = new JYearChooser();
 		add(spinnerEnrollYear, "4, 8");
 
-	}
-
-	private void setClasses(ArrayList<HedspiClass> sortedListIgnoreCase) {
-		classModel.removeAllElements();
-		for(HedspiClass it : sortedListIgnoreCase)
-			classModel.addElement(it);
 	}
 
 	public void setStudent(Student obj) {

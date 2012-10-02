@@ -3,9 +3,7 @@ package org.hedspi.posgresql.hedspi_student_manager.view.contact.address;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
-import org.hedspi.posgresql.hedspi_student_manager.model.Model;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.City;
-import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
 import org.hedspi.posgresql.hedspi_student_manager.view.util.list.ObjectListPanel;
 
 public class AddressPanel extends JSplitPane {
@@ -27,8 +25,7 @@ public class AddressPanel extends JSplitPane {
 		JScrollPane scrollPane = new JScrollPane();
 		setLeftComponent(scrollPane);
 		
-		ObjectListPanel<City> panel_1 = new ObjectListPanel<City>(panel);
-		panel_1.setList(((HedspiObjects<City>)Model.getInstance().getData("getCitiesList")).getSortedListIgnoreCase());
+		ObjectListPanel<City> panel_1 = new ObjectListPanel<City>(panel, City.getCities().getListModel());
 		scrollPane.setViewportView(panel_1);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();

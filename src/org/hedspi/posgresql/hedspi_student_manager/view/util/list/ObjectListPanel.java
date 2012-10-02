@@ -1,14 +1,11 @@
 package org.hedspi.posgresql.hedspi_student_manager.view.util.list;
 
 import java.awt.FlowLayout;
-import java.util.ArrayList;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -25,19 +22,12 @@ public class ObjectListPanel<T extends Object> extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public void setList(ArrayList<T> data) {
-		model.removeAllElements();
-		for(T it : data)
-			model.addElement(it);
-	}
-
-	private DefaultListModel<T> model;
 	private IObjectViewPanel<T> viewPanel;
 
 	/**
 	 * Create the panel.
 	 */
-	public ObjectListPanel(IObjectViewPanel<T> viewPanelArg) {
+	public ObjectListPanel(IObjectViewPanel<T> viewPanelArg, DefaultListModel<T> model) {
 		this.viewPanel = viewPanelArg;
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
@@ -54,8 +44,6 @@ public class ObjectListPanel<T extends Object> extends JPanel {
 		
 		JLabel lblCitiesList = DefaultComponentFactory.getInstance().createLabel("Values list");
 		add(lblCitiesList, "2, 4");
-		
-		model = new DefaultListModel<>();
 		
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "2, 6, fill, fill");

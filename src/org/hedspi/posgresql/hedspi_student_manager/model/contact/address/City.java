@@ -2,8 +2,6 @@ package org.hedspi.posgresql.hedspi_student_manager.model.contact.address;
 
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObject;
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
-import org.hedspi.posgresql.hedspi_student_manager.service.AddressService;
-import org.javatuples.Pair;
 
 public class City extends HedspiObject {
 	
@@ -35,11 +33,6 @@ public class City extends HedspiObject {
 	}
 
 	public static HedspiObjects<City> getCities() {
-		if (cities == null){
-			Pair<HedspiObjects<City>, HedspiObjects<District>> val = AddressService.getAddresses();
-			setCities(val.getValue0());
-			District.setDistricts(val.getValue1());
-		}
 		return cities;
 	}
 

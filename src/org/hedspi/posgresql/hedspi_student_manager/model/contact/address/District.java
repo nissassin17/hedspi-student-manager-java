@@ -26,18 +26,27 @@ public class District extends HedspiObject {
 
 	public District(String id, City myCity, String name) {
 		super(id);
-		this.myCity = myCity;
+		this.city = myCity;
 		this.name = name;
+	}
+
+	public District(String id, String name, City myCity) {
+		super(id);
+		this.name = name;
+		this.city = myCity;
 	}
 
 	private String name;
-	public District(String id, String name) {
-		super(id);
-		this.name = name;
+	private City city;
+	
+	public City getCity() {
+		return city;
 	}
 
-	private City myCity;
-	
+	public void setCity(City city) {
+		this.city = city;
+	}
+
 	public District(String id) {
 		super(id);
 	}
@@ -51,11 +60,11 @@ public class District extends HedspiObject {
 	}
 
 	public City getMyCity() {
-		return myCity;
+		return city;
 	}
 
 	public void setMyCity(City myCity) {
-		this.myCity = myCity;
+		this.city = myCity;
 	}
 	
 	public String toString(){

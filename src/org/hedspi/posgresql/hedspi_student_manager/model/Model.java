@@ -5,9 +5,17 @@ import java.util.logging.Level;
 
 import org.hedspi.posgresql.hedspi_student_manager.control.Control;
 import org.hedspi.posgresql.hedspi_student_manager.model.academic.HedspiClass;
+import org.hedspi.posgresql.hedspi_student_manager.model.contact.Contact;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.Student;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.City;
+import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.District;
+import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
+import org.hedspi.posgresql.hedspi_student_manager.service.AddressService;
+import org.hedspi.posgresql.hedspi_student_manager.service.ClassService;
+import org.hedspi.posgresql.hedspi_student_manager.service.ContactService;
 import org.hedspi.posgresql.hedspi_student_manager.service.CoreService;
+import org.hedspi.posgresql.hedspi_student_manager.service.StudentService;
+import org.javatuples.Pair;
 
 public class Model implements IModel{
 	
@@ -17,9 +25,21 @@ public class Model implements IModel{
 	@Override
 	public void setData(String command, Object... data) {
 		switch (command){
+		case "cloneDatabase":
+			cloneDatabase();
+			break;
 		default:
 			Control.getInstance().getLogger().log(Level.WARNING, "Unsupported setData operation  - " + command);
 		}
+	}
+
+	private void cloneDatabase() {
+		Pair<HedspiObjects<City>, HedspiObjects<District>> val = AddressService.getAddresses();
+		City.setCities(val.getValue0());
+		District.setDistricts(val.getValue1());
+		Contact.setContacts(ContactService.getContacts());
+		HedspiClass.setClasses(ClassService.getClasses());
+		Student.setStudents(StudentService.getStudentList());
 	}
 
 	@Override
@@ -29,15 +49,6 @@ public class Model implements IModel{
 			Properties loginInfo = (Properties) data[0];
 			return CoreService.isGoodLogin(loginInfo);
 		
-		case "getCitiesList":
-			return City.getCities();
-			
-		case "getStudentsList":
-			return Student.getStudents();
-			
-		case "getClassList":
-			return HedspiClass.getClasses();
-			
 		default:
 			Control.getInstance().getLogger().log(Level.WARNING, "Unsupported getData operation  - " + command + ". Return null");
 			return null;

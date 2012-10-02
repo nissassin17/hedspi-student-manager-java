@@ -16,6 +16,7 @@ import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import com.jgoodies.forms.layout.FormLayout;
@@ -127,10 +128,17 @@ public class ListEditor<T extends Object> extends JPanel {
 
 	}
 
-	public void setValues(ArrayList<T> values) {
+	public void setValues(Collection<T> collection) {
 		listModel.clear();
-		for(T it : values)
+		for(T it : collection)
 			listModel.addElement(it);
+	}
+	
+	public ArrayList<T> getValues(){
+		ArrayList<T> val = new ArrayList<>();
+		for(int i = 0; i < listModel.getSize(); i ++)
+			val.add(listModel.get(i));
+		return val;
 	}
 
 }

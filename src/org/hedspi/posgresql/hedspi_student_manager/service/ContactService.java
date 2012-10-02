@@ -7,59 +7,39 @@ import java.util.logging.Level;
 
 import org.hedspi.posgresql.hedspi_student_manager.control.Control;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.Contact;
-import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.Address;
-import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.City;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.District;
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
-import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.NewLineListManipulator;
+import org.hedspi.posgresql.hedspi_student_manager.model.util.NewLineUtil;
 
 public class ContactService {
 
 	public static HedspiObjects<Contact> getContacts() {
 		HedspiObjects<Contact> contacts = new HedspiObjects<>();
-		//get raw contact
+		//get contact
 		Control.getInstance().getLogger().log(Level.INFO, "Fetch raw data of contacts");
-		String query = "select \"FirstName\", \"LastName\", \"Sex\", \"DOB\", \"Email\", \"Phone\", \"ImageUrl\", \"Notes\", \"Home\", \"CT#\"\n" + 
+		String query = "select \"FirstName\", \"LastName\", \"Sex\", \"DOB\", \"Email\", \"Phone\", \"ImageUrl\", \"Notes\", \"Home\", \"CT#\", \"DT#\" \n" + 
 				"from \"Contact\"";
 		ArrayList<HashMap<String, Object>> rs = CoreService.getInstance().query(query);
 		for(HashMap<String, Object> it : rs){
-			String id = String.valueOf((int)it.get("CT#"));
-			Contact ct = new Contact(id);
-			ct.setNote((String)it.get("Notes"));
-			ct.setImage(new NewLineListManipulator((String)it.get("ImageUrl")));
-			ct.setPhone(new NewLineListManipulator((String)it.get("Phone")));
-			ct.setFirstName((String)it.get("FirstName"));
-			ct.setLastName((String)it.get("LastName"));
-			ct.setEmail(new NewLineListManipulator((String)it.get("Email")));
-			ct.setDob((Date)it.get("DOB"));
-			ct.setAddress(new Address((String)it.get("Home"), null, null));
-			ct.setMan((boolean)it.get("Sex"));
-
-			contacts.put(ct);
-		}
-		
-		//get address
-		//get city
-		Control.getInstance().getLogger().log(Level.INFO, "Fetch address (city and district) of contact");
-		Control.getInstance().getLogger().log(Level.INFO, "Fetch get city of contact");
-		HedspiObjects<City> cities = City.getCities();
-		query = "select \"CT#\", \"CY#\" from \"AtCity\"";
-		rs = CoreService.getInstance().query(query);
-		for(HashMap<String, Object> it : rs){
-			String cont = String.valueOf((int)it.get("CT#"));
-			String cit = String.valueOf((int)it.get("CY#"));
-			contacts.get(cont).getAddress().setCity(cities.get(cit));
-		}
-		
-		//get district
-		Control.getInstance().getLogger().log(Level.INFO, "Fetch district of contact");
-		HedspiObjects<District> districts = District.getDistricts();
-		query = "select \"DT#\", \"CT#\" from \"AtDistrict\"";
-		rs = CoreService.getInstance().query(query);
-		for(HashMap<String, Object> it : rs){
-			String dist = String.valueOf((int)it.get("DT#"));
-			String cont = String.valueOf((int)it.get("CT#"));
-			contacts.get(cont).getAddress().setDistrict(districts.get(dist));
+			String first = (String)it.get("FirstName");
+			String last = (String)it.get("LastName");
+			boolean sex = (boolean)it.get("Sex");
+			Date dob = (Date)it.get("DOB");
+			ArrayList<String> emails = NewLineUtil.parse((String)it.get("Email"));
+			ArrayList<String> phones = NewLineUtil.parse((String)it.get("Phone"));
+			ArrayList<String> images = NewLineUtil.parse((String)it.get("Phone"));
+			String note = (String)it.get("Notes");
+			String home = (String)it.get("Home");
+			int id = (int)it.get("CT#");
+			String ct = String.valueOf(id);
+			int dtid = (int)it.get("DT#");
+			String dt = String.valueOf(dtid);
+			
+			District district = District.getDistricts().get(dt);
+			
+			Contact contact = new Contact(ct, note, images, phones, dob, sex, first, last, emails, home, district);
+			
+			contacts.put(contact);
 		}
 		
 		return contacts;

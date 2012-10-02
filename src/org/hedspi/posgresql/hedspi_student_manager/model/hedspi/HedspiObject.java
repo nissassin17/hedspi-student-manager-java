@@ -1,6 +1,6 @@
 package org.hedspi.posgresql.hedspi_student_manager.model.hedspi;
 
-public class HedspiObject {
+public class HedspiObject implements Comparable<Object> {
 	
 	@Override
 	public int hashCode() {
@@ -51,6 +51,11 @@ public class HedspiObject {
 //	
 	public String toString(){
 		return id;
+	}
+
+	@Override
+	public int compareTo(Object arg0) {
+		return this.toString().compareTo(arg0.toString());
 	}
 
 }
