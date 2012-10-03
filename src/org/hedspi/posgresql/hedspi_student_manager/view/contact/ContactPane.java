@@ -30,7 +30,10 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
-import com.toedter.calendar.JDateChooser;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
+import java.util.Date;
+import java.util.Calendar;
 
 public class ContactPane extends JPanel {
 	/**
@@ -40,9 +43,9 @@ public class ContactPane extends JPanel {
 	private JTextField textFieldHome;
 	private JTextField textFieldLast;
 	private JTextField textFieldFirst;
-	private JDateChooser textFieldBrithday;
 	private SortedHedspiObjectsComboModel<District> districtModel;
 	private DefaultListEditor listPhone;
+	private JSpinner spinnerDob;
 
 	public DefaultListEditor getListPhone() {
 		return listPhone;
@@ -190,8 +193,6 @@ public class ContactPane extends JPanel {
 		);
 		textFieldFirst = oaFirst.getTextField();
 		textFieldFirst.setColumns(10);
-		
-		textFieldBrithday = new JDateChooser();
 
 		//For city does not need updater associated with contact because it's district's job.
 		comboBoxCity = new JComboBox<>(City.getCities().getComboBoxModel());
@@ -246,7 +247,10 @@ public class ContactPane extends JPanel {
 		add(label_4, "3, 9, left, center");
 		add(toggleButtonSex, "4, 9, left, top");
 		add(label_5, "3, 11, left, center");
-		add(textFieldBrithday, "4, 11, fill, top");
+		
+		spinnerDob = new JSpinner();
+		spinnerDob.setModel(new SpinnerDateModel(new Date(1349197200000L), null, null, Calendar.DAY_OF_YEAR));
+		add(spinnerDob, "4, 11");
 		add(label_9, "3, 13, left, top");
 		add(label_7, "3, 15, left, center");
 		add(comboBoxCity, "4, 15, fill, top");
@@ -274,6 +278,18 @@ public class ContactPane extends JPanel {
 		JLabel lblNotes = new JLabel("Notes");
 		add(lblNotes, "3, 23");
 		
+		oaNote = new OAEditorPane<Contact>(new IObjectUpdater<Contact, String>() {
+
+			@Override
+			public void setValue(Contact object, String value) {
+				object.setNote(value);
+			}
+
+			@Override
+			public String getValue(Contact object) {
+				return object.getNote();
+			}
+		});
 		editorPanelNote = new JEditorPane();
 		editorPanelNote.setBorder(new LineBorder(new Color(0, 0, 0)));
 		add(editorPanelNote, "4, 23, fill, fill");
@@ -288,14 +304,14 @@ public class ContactPane extends JPanel {
 
 	public void setContact(Contact contact) {
 		this.contact = contact;
-		getTextFieldBrithday().setDate(contact.getDob());
+		spinnerDob.setModel(new SpinnerDateModel(contact.getDob(), null, null, Calendar.DAY_OF_YEAR)); 
 		oaFirst.setObject(contact);
 		oaLast.setObject(contact);
 		oaHome.setObject(contact);
 		getListPhone().setHedspiObject(contact.getPhone());
 		getListEmail().setHedspiObject(contact.getEmail());
 		getListImage().setHedspiObject(contact.getImage());
-		getEditorPanelNote().setText(contact.getNote());
+		oaNote.setObject(contact);
 		//this action must be called or be positioned inside comboBoxDistrict updater 
 		setCity(contact.getDistrict().getCity());
 		oaDistrict.setObject(contact);
@@ -303,9 +319,6 @@ public class ContactPane extends JPanel {
 		getToggleButtonSex().setSelected(!contact.isMan());
 	}
 
-	protected JEditorPane getEditorPanelNote() {
-		return editorPanelNote;
-	}
 	protected JComboBox<City> getComboBox_1() {
 		return comboBoxCity;
 	}
@@ -315,8 +328,4 @@ public class ContactPane extends JPanel {
 	protected JToggleButton getToggleButtonSex() {
 		return toggleButtonSex;
 	}
-	protected JDateChooser getTextFieldBrithday() {
-		return textFieldBrithday;
-	}
-	
 }
