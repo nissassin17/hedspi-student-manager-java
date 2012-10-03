@@ -6,6 +6,8 @@ import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.Distric
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObject;
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.NewLineListManipulator;
+import org.hedspi.posgresql.hedspi_student_manager.view.util.object_associated.IObjectUpdater;
+import org.hedspi.posgresql.hedspi_student_manager.view.util.object_associated.OATextField;
 
 public class Contact extends HedspiObject {
 	
@@ -45,7 +47,7 @@ public class Contact extends HedspiObject {
 		this.home = home;
 		this.district = district;
 	}
-
+	
 	public String getNote() {
 		return note;
 	}
