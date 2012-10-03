@@ -10,12 +10,12 @@ import org.hedspi.posgresql.hedspi_student_manager.model.contact.Student;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.City;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.District;
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
+import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.Pair;
 import org.hedspi.posgresql.hedspi_student_manager.service.AddressService;
 import org.hedspi.posgresql.hedspi_student_manager.service.ClassService;
 import org.hedspi.posgresql.hedspi_student_manager.service.ContactService;
 import org.hedspi.posgresql.hedspi_student_manager.service.CoreService;
 import org.hedspi.posgresql.hedspi_student_manager.service.StudentService;
-import org.javatuples.Pair;
 
 public class Model implements IModel{
 	
@@ -35,8 +35,8 @@ public class Model implements IModel{
 
 	private void cloneDatabase() {
 		Pair<HedspiObjects<City>, HedspiObjects<District>> val = AddressService.getAddresses();
-		City.setCities(val.getValue0());
-		District.setDistricts(val.getValue1());
+		City.setCities(val.getObject0());
+		District.setDistricts(val.getObject1());
 		Contact.setContacts(ContactService.getContacts());
 		HedspiClass.setClasses(ClassService.getClasses());
 		Student.setStudents(StudentService.getStudentList());

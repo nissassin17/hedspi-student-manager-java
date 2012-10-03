@@ -8,7 +8,7 @@ import org.hedspi.posgresql.hedspi_student_manager.control.Control;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.City;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.District;
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.HedspiObjects;
-import org.javatuples.Pair;
+import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.Pair;
 
 public class AddressService {
 	public static Pair<HedspiObjects<City>, HedspiObjects<District>> getAddresses() {
