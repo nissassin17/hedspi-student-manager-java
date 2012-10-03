@@ -10,6 +10,7 @@ import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
@@ -18,9 +19,11 @@ import org.hedspi.posgresql.hedspi_student_manager.model.contact.Contact;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.City;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.address.District;
 import org.hedspi.posgresql.hedspi_student_manager.model.hedspi.SortedHedspiObjectsComboModel;
-import org.hedspi.posgresql.hedspi_student_manager.view.util.AssociatedTextField;
-import org.hedspi.posgresql.hedspi_student_manager.view.util.ITextFieldUpdater;
 import org.hedspi.posgresql.hedspi_student_manager.view.util.list.DefaultListEditor;
+import org.hedspi.posgresql.hedspi_student_manager.view.util.object_associated.IObjectUpdater;
+import org.hedspi.posgresql.hedspi_student_manager.view.util.object_associated.OAComboBox;
+import org.hedspi.posgresql.hedspi_student_manager.view.util.object_associated.OAEditorPane;
+import org.hedspi.posgresql.hedspi_student_manager.view.util.object_associated.OATextField;
 
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.jgoodies.forms.factories.FormFactory;
@@ -34,12 +37,13 @@ public class ContactPane extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private AssociatedTextField<Contact> textFieldHome;
-	private AssociatedTextField<Contact> textFieldLast;
-	private AssociatedTextField<Contact> textFieldFirst;
+	private JTextField textFieldHome;
+	private JTextField textFieldLast;
+	private JTextField textFieldFirst;
 	private JDateChooser textFieldBrithday;
 	private SortedHedspiObjectsComboModel<District> districtModel;
 	private DefaultListEditor listPhone;
+
 	public DefaultListEditor getListPhone() {
 		return listPhone;
 	}
@@ -75,6 +79,11 @@ public class ContactPane extends JPanel {
 	private JComboBox<City> comboBoxCity;
 	private JComboBox<District> comboBoxDistrict;
 	private JToggleButton toggleButtonSex;
+	private OATextField<Contact> oaHome;
+	private OATextField<Contact> oaLast;
+	private OATextField<Contact> oaFirst;
+	private OAEditorPane<Contact> oaNote;
+	private OAComboBox<District, Contact> oaDistrict;
 
 	private void setCity(City currentCity) {
 		getComboBox_1().setSelectedItem(currentCity);
@@ -107,7 +116,20 @@ public class ContactPane extends JPanel {
 		JLabel label_9 = new JLabel("Address");
 		
 		districtModel = new SortedHedspiObjectsComboModel<District>();
-		comboBoxDistrict = new JComboBox<>(districtModel);
+		oaDistrict = new OAComboBox<>(new IObjectUpdater<Contact, District>() {
+
+			@Override
+			public void setValue(Contact object, District value) {
+				object.setDistrict(value);
+			}
+
+			@Override
+			public District getValue(Contact object) {
+				return object.getDistrict();
+			}
+		});
+		comboBoxDistrict = oaDistrict.getComboBox();
+		comboBoxDistrict.setModel(districtModel);
 		
 		toggleButtonSex = new JToggleButton("Male");
 		toggleButtonSex.addItemListener(new ItemListener() {
@@ -120,51 +142,58 @@ public class ContactPane extends JPanel {
 			}
 		});
 		
-		textFieldHome = new AssociatedTextField<>(new ITextFieldUpdater<Contact>() {
+		oaHome = new OATextField<Contact>(new IObjectUpdater<Contact, String>() {
 
 			@Override
-			public void setText(Contact obj, String text) {
-				obj.setHome(text);
+			public void setValue(Contact object, String value) {
+				object.setHome(value);
 			}
 
 			@Override
-			public String getText(Contact obj) {
-				return obj.getHome();
+			public String getValue(Contact object) {
+				return object.getHome();
 			}
 		});
+		textFieldHome = oaHome.getTextField();
 		textFieldHome.setColumns(10);
 		
-		textFieldLast = new AssociatedTextField<>(new ITextFieldUpdater<Contact>() {
+		oaLast = new OATextField<>(new IObjectUpdater<Contact, String>() {
 
 			@Override
-			public void setText(Contact obj, String text) {
-				obj.setLastName(text);
+			public void setValue(Contact object, String value) {
+				object.setLastName(value);
 			}
 
 			@Override
-			public String getText(Contact obj) {
-				return obj.getLastName();
+			public String getValue(Contact object) {
+				return object.getLastName();
 			}
-		});
+
+			}
+		);
+		textFieldLast = oaLast.getTextField();
 		textFieldLast.setColumns(10);
 		
-		textFieldFirst = new AssociatedTextField<Contact>(new ITextFieldUpdater<Contact>() {
+		oaFirst = new OATextField<Contact>(new IObjectUpdater<Contact, String>() {
 
 			@Override
-			public void setText(Contact obj, String text) {
-				obj.setFirstName(text);
-				
+			public void setValue(Contact object, String value) {
+				object.setFirstName(value);
 			}
 
 			@Override
-			public String getText(Contact obj) {
-				return obj.getFirstName();
+			public String getValue(Contact object) {
+				return object.getFirstName();
 			}
-		});
+
+			}
+		);
+		textFieldFirst = oaFirst.getTextField();
 		textFieldFirst.setColumns(10);
 		
 		textFieldBrithday = new JDateChooser();
-		
+
+		//For city does not need updater associated with contact because it's district's job.
 		comboBoxCity = new JComboBox<>(City.getCities().getComboBoxModel());
 		comboBoxCity.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -260,17 +289,16 @@ public class ContactPane extends JPanel {
 	public void setContact(Contact contact) {
 		this.contact = contact;
 		getTextFieldBrithday().setDate(contact.getDob());
-		textFieldFirst.setObject(contact);
-		textFieldLast.setObject(contact);
-		textFieldHome.setObject(contact);
+		oaFirst.setObject(contact);
+		oaLast.setObject(contact);
+		oaHome.setObject(contact);
 		getListPhone().setHedspiObject(contact.getPhone());
 		getListEmail().setHedspiObject(contact.getEmail());
 		getListImage().setHedspiObject(contact.getImage());
 		getEditorPanelNote().setText(contact.getNote());
+		//this action must be called or be positioned inside comboBoxDistrict updater 
 		setCity(contact.getDistrict().getCity());
-		District dt = contact.getDistrict();
-		if (dt.getMyCity() == contact.getDistrict().getCity())
-			getComboBox().setSelectedItem(dt);
+		oaDistrict.setObject(contact);
 		
 		getToggleButtonSex().setSelected(!contact.isMan());
 	}
@@ -291,20 +319,4 @@ public class ContactPane extends JPanel {
 		return textFieldBrithday;
 	}
 	
-//	public Contact getCurrentContact(){
-//		Date dob = getTextFieldBrithday().getDate();
-//		boolean isMan = toggleButtonSex.isSelected();
-//		String last = textFieldLast.getText();
-//		String first = textFieldFirst.getText();
-//		District district = (District)comboBoxDistrict.getSelectedItem();
-//		ArrayList<String> phone = listPhone.getValues();
-//		ArrayList<String> emails = listEmail.getValues();
-//		ArrayList<String> images = listEditorImage.getValues();
-//		String home = textFieldHome.getText();
-//		String note = editorPanelNote.getText();
-//		
-//		Contact contact = new Contact(getContact().getId(), note, images, phone, dob, isMan, first, last, emails, home, district);
-//		
-//		return contact;
-//	}
 }

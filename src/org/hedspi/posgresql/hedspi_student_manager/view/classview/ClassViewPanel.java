@@ -4,9 +4,10 @@ import javax.swing.JPanel;
 
 import org.hedspi.posgresql.hedspi_student_manager.model.academic.HedspiClass;
 import org.hedspi.posgresql.hedspi_student_manager.model.contact.Student;
-import org.hedspi.posgresql.hedspi_student_manager.view.util.AssociatedTextField;
-import org.hedspi.posgresql.hedspi_student_manager.view.util.ITextFieldUpdater;
 import org.hedspi.posgresql.hedspi_student_manager.view.util.list.IObjectViewPanel;
+import org.hedspi.posgresql.hedspi_student_manager.view.util.object_associated.IObjectUpdater;
+import org.hedspi.posgresql.hedspi_student_manager.view.util.object_associated.OATextField;
+
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
@@ -23,8 +24,9 @@ public class ClassViewPanel extends JPanel implements IObjectViewPanel<HedspiCla
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private AssociatedTextField<HedspiClass> textFieldClassName;
+	private JTextField textFieldClassName;
 	private JList<Student> listClass;
+	private OATextField<HedspiClass> oaClassName;
 
 	/**
 	 * Create the panel.
@@ -54,18 +56,19 @@ public class ClassViewPanel extends JPanel implements IObjectViewPanel<HedspiCla
 		JLabel lblClassName = DefaultComponentFactory.getInstance().createLabel("Class name");
 		panel.add(lblClassName, "1, 2, left, center");
 		
-		textFieldClassName = new AssociatedTextField<HedspiClass>(new ITextFieldUpdater<HedspiClass>() {
+		oaClassName = new OATextField<HedspiClass>(new IObjectUpdater<HedspiClass, String>() {
 
 			@Override
-			public void setText(HedspiClass obj, String text) {
-				obj.setName(text);
+			public void setValue(HedspiClass object, String value) {
+				object.setName(value);
 			}
 
 			@Override
-			public String getText(HedspiClass obj) {
-				return obj.getName();
+			public String getValue(HedspiClass object) {
+				return object.getName();
 			}
 		});
+		textFieldClassName = oaClassName.getTextField();
 		panel.add(textFieldClassName, "3, 2, fill, top");
 		textFieldClassName.setColumns(10);
 		
