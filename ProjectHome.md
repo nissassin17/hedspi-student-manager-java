@@ -1,0 +1,1 @@
+A small application to manage student using postgresql and java
